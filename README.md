@@ -12,3 +12,24 @@
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/airflux/airflux-functional.svg)](http://isitmaintained.com/project/airflux/airflux-functional "Percentage of issues still open")
 
 [![](https://jitpack.io/v/airflux/airflux-functional.svg)](https://jitpack.io/#airflux/airflux-functional)
+
+# Codecov graphs
+
+[![Codecov Sunburst](https://codecov.io/gh/airflux/airflux-functional/branch/main/graphs/sunburst.svg?token=QBD7092MJI)](https://codecov.io/gh/airflux/airflux-functional/branch/main/graphs/sunburst.svg?token=QBD7092MJI)
+
+# License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fairflux%2Fairflux-functional.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fairflux%2Fairflux-functional?ref=badge_large&issueType=license)
+
+# Installation
+
+```groovy
+repositories {
+  mavenCentral()
+  maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+  implementation 'com.github.airflux:airflux-functional:Tag'
+}
+```
