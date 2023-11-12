@@ -118,7 +118,7 @@ public inline infix fun <T, R> Try<T>.map(transform: (T) -> R): Try<R> {
 }
 
 @OptIn(ExperimentalContracts::class)
-public inline infix fun <T, R> Try<T>.bind(transform: (T) -> Try<R>): Try<R> {
+public inline infix fun <T, R> Try<T>.flatMap(transform: (T) -> Try<R>): Try<R> {
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
