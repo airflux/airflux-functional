@@ -266,13 +266,13 @@ internal class ResultTest : FreeSpec() {
                 }
             }
 
-            "the `bind` function" - {
+            "the `flatMap` function" - {
 
                 "when a variable has the `Result#Success` type" - {
                     val original: Result<String, Error> = ORIGINAL_VALUE.success()
 
                     "then should return a result of applying the [transform] function to the value" {
-                        val result = original.bind { result -> result.toInt().success() }
+                        val result = original.flatMap { result -> result.toInt().success() }
 
                         result.shouldBeSuccess()
                         result.value shouldBe ORIGINAL_VALUE.toInt()
@@ -283,7 +283,7 @@ internal class ResultTest : FreeSpec() {
                     val original: Result<String, Error> = Error.Empty.error()
 
                     "then should return an original do not apply the [transform] function to a value" {
-                        val result = original.bind { success ->
+                        val result = original.flatMap { success ->
                             success.toInt().success()
                         }
 

@@ -101,11 +101,11 @@ public inline infix fun <T, R, E> Result<T, E>.map(transform: (T) -> R): Result<
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
-    return bind { value -> transform(value).success() }
+    return flatMap { value -> transform(value).success() }
 }
 
 @OptIn(ExperimentalContracts::class)
-public inline infix fun <T, R, E> Result<T, E>.bind(transform: (T) -> Result<R, E>): Result<R, E> {
+public inline infix fun <T, R, E> Result<T, E>.flatMap(transform: (T) -> Result<R, E>): Result<R, E> {
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
