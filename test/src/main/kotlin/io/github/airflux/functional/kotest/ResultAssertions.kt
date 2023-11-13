@@ -30,7 +30,7 @@ public fun <T, E> Result<T, E>.shouldBeSuccess(): Result.Success<T> {
     }
 
     val message =
-        "The result type is not as expected. Expected type: `Result.Success`, actual type: `Result.Failure` ($this)."
+        "The result type is not as expected. Expected type: `Result.Success`, actual type: `Result.Error` ($this)."
     return if (isSuccess()) this else throw failure(message = message)
 }
 
@@ -41,6 +41,6 @@ public fun <T, E> Result<T, E>.shouldBeError(): Result.Error<E> {
     }
 
     val message =
-        "The result type is not as expected. Expected type: `Result.Failure`,  actual type: `Result.Success` ($this)."
+        "The result type is not as expected. Expected type: `Result.Error`,  actual type: `Result.Success` ($this)."
     return if (isError()) this else throw failure(message = message)
 }
