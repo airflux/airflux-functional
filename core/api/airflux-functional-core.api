@@ -103,6 +103,10 @@ public final class io/github/airflux/functional/Try$Success : io/github/airflux/
 	public final fun getResult ()Ljava/lang/Object;
 }
 
+public final class io/github/airflux/functional/TryExtensionsKt {
+	public static final fun toResult (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
+}
+
 public final class io/github/airflux/functional/TryKt {
 	public static final fun flatMap (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
 	public static final fun fold (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
