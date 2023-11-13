@@ -20,17 +20,17 @@ import io.github.airflux.functional.kotest.shouldBeSuccess
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 
-internal class ResultFxTest : FreeSpec() {
+internal class ResultDSLTest : FreeSpec() {
 
     init {
-        "The Result Fx" - {
+        "The Result DSL" - {
 
             "when all functions involved are executed successfully" - {
                 fun first(): Result<Int, Error> = 1.success()
                 fun second(): Result<Int, Error> = 2.success()
 
                 "then binding should return a successful value" {
-                    val result = Result.fx {
+                    val result = Result {
                         val (a) = first()
                         val (b) = second()
                         a + b
@@ -47,7 +47,7 @@ internal class ResultFxTest : FreeSpec() {
                 fun third(): Result<Int, Error> = Error.Second.error()
 
                 "then binding should return a first failure" {
-                    val result = Result.fx {
+                    val result = Result {
                         val (a) = first()
                         val (b) = second()
                         val (c) = third()

@@ -26,13 +26,30 @@ public fun <T> T.success(): Result.Success<T> = Result.Success(this)
 
 public fun <E> E.error(): Result.Error<E> = Result.Error(this)
 
+@Suppress("FunctionNaming")
+@OptIn(ExperimentalContracts::class)
+public inline fun <T, E> Result(block: Result.DSLScope<E>.() -> T): Result<T, E> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    val receiver = ResultDSLScope<E>()
+    return try {
+        with(receiver) {
+            block().success()
+        }
+    } catch (ignore: FxScopeException) {
+        receiver.error!!
+    }
+}
+
 public sealed class Result<out T, out E> {
 
     public data class Success<out T>(public val value: T) : Result<T, Nothing>()
 
     public data class Error<out E>(public val cause: E) : Result<Nothing, E>()
 
-    public interface FxScope<in E> {
+    public interface DSLScope<in E> {
         public fun <T> Result<T, E>.bind(): T
         public operator fun <T> Result<T, E>.component1(): T
     }
@@ -50,22 +67,6 @@ public sealed class Result<out T, out E> {
         public val asEmptyList: Success<List<Nothing>> = Success(emptyList())
 
         public fun of(value: Boolean): Success<Boolean> = if (value) asTrue else asFalse
-
-        @OptIn(ExperimentalContracts::class)
-        public inline fun <T, E> fx(block: FxScope<E>.() -> T): Result<T, E> {
-            contract {
-                callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-            }
-
-            val receiver = ResultFxScope<E>()
-            return try {
-                with(receiver) {
-                    block().success()
-                }
-            } catch (ignore: FxScopeException) {
-                receiver.error!!
-            }
-        }
     }
 }
 

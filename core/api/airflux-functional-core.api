@@ -7,13 +7,17 @@ public abstract class io/github/airflux/functional/Result {
 }
 
 public final class io/github/airflux/functional/Result$Companion {
-	public final fun fx (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public final fun getAsEmptyList ()Lio/github/airflux/functional/Result$Success;
 	public final fun getAsFalse ()Lio/github/airflux/functional/Result$Success;
 	public final fun getAsNull ()Lio/github/airflux/functional/Result$Success;
 	public final fun getAsTrue ()Lio/github/airflux/functional/Result$Success;
 	public final fun getAsUnit ()Lio/github/airflux/functional/Result$Success;
 	public final fun of (Z)Lio/github/airflux/functional/Result$Success;
+}
+
+public abstract interface class io/github/airflux/functional/Result$DSLScope {
+	public abstract fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public abstract fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
 }
 
 public final class io/github/airflux/functional/Result$Error : io/github/airflux/functional/Result {
@@ -27,11 +31,6 @@ public final class io/github/airflux/functional/Result$Error : io/github/airflux
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract interface class io/github/airflux/functional/Result$FxScope {
-	public abstract fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
-	public abstract fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
-}
-
 public final class io/github/airflux/functional/Result$Success : io/github/airflux/functional/Result {
 	public fun <init> (Ljava/lang/Object;)V
 	public final fun component1 ()Ljava/lang/Object;
@@ -43,7 +42,7 @@ public final class io/github/airflux/functional/Result$Success : io/github/airfl
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class io/github/airflux/functional/ResultFxScope : io/github/airflux/functional/Result$FxScope {
+public final class io/github/airflux/functional/ResultDSLScope : io/github/airflux/functional/Result$DSLScope {
 	public fun <init> ()V
 	public fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
 	public fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
@@ -51,6 +50,7 @@ public final class io/github/airflux/functional/ResultFxScope : io/github/airflu
 }
 
 public final class io/github/airflux/functional/ResultKt {
+	public static final fun Result (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public static final fun andThen (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public static final fun error (Ljava/lang/Object;)Lio/github/airflux/functional/Result$Error;
 	public static final fun flatMap (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;

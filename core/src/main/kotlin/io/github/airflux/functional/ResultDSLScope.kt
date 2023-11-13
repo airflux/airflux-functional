@@ -16,7 +16,7 @@
 package io.github.airflux.functional
 
 @PublishedApi
-internal class ResultFxScope<E> : Result.FxScope<E> {
+internal class ResultDSLScope<E> : Result.DSLScope<E> {
     var error: Result.Error<E>? = null
         private set
 
