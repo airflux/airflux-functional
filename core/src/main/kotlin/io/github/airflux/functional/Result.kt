@@ -22,26 +22,15 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.experimental.ExperimentalTypeInference
 
-public fun <T> T.success(): Result.Success<T> = Result.Success(this)
+@JvmName("asSuccess")
+public fun <T> T.success(): Result.Success<T> = success(this)
 
-public fun <E> E.error(): Result.Error<E> = Result.Error(this)
+@JvmName("asError")
+public fun <E> E.error(): Result.Error<E> = error(this)
 
-@Suppress("FunctionNaming")
-@OptIn(ExperimentalContracts::class)
-public inline fun <T, E> Result(block: Result.DSLScope<E>.() -> T): Result<T, E> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
+public fun <T> success(value: T): Result.Success<T> = Result.Success(value)
 
-    val receiver = ResultDSLScope<E>()
-    return try {
-        with(receiver) {
-            block().success()
-        }
-    } catch (ignore: FxScopeException) {
-        receiver.error!!
-    }
-}
+public fun <E> error(cause: E): Result.Error<E> = Result.Error(cause)
 
 public sealed class Result<out T, out E> {
 
@@ -49,7 +38,7 @@ public sealed class Result<out T, out E> {
 
     public data class Error<out E>(public val cause: E) : Result<Nothing, E>()
 
-    public interface DSLScope<in E> {
+    public interface Builder<E> {
         public fun <T> Result<T, E>.bind(): T
         public operator fun <T> Result<T, E>.component1(): T
     }
@@ -241,14 +230,14 @@ public fun <T, E> Iterable<Result<T, E>>.sequence(): Result<List<T>, E> {
 
 @OptIn(ExperimentalTypeInference::class, ExperimentalContracts::class)
 @OverloadResolutionByLambdaReturnType
-public inline fun <T, R, E> Iterable<T>.traverse(transforn: (T) -> Result<R, E>): Result<List<R>, E> {
+public inline fun <T, R, E> Iterable<T>.traverse(transform: (T) -> Result<R, E>): Result<List<R>, E> {
     contract {
-        callsInPlace(transforn, InvocationKind.UNKNOWN)
+        callsInPlace(transform, InvocationKind.UNKNOWN)
     }
     val items = buildList {
         val iter = this@traverse.iterator()
         while (iter.hasNext()) {
-            val item = transforn(iter.next())
+            val item = transform(iter.next())
             if (item.isSuccess()) add(item.value) else return item
         }
     }

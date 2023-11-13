@@ -23,39 +23,111 @@ import io.kotest.matchers.shouldBe
 internal class ResultDSLTest : FreeSpec() {
 
     init {
-        "The Result DSL" - {
+        "The DSL" - {
 
-            "when all functions involved are executed successfully" - {
-                fun first(): Result<Int, Error> = 1.success()
-                fun second(): Result<Int, Error> = 2.success()
+            "the function `Result`" - {
 
-                "then binding should return a successful value" {
-                    val result = Result {
-                        val (a) = first()
-                        val (b) = second()
-                        a + b
+                "when using one level of DSL" - {
+
+                    "when every function returns a successful" - {
+                        fun first(): Result<Int, Error> = 1.success()
+                        fun second(): Result<Int, Error> = 2.success()
+
+                        "then the binding should return a successful value" {
+                            val result: Result<Int, Error> = Result {
+                                val (a) = first()
+                                val (b) = second()
+                                success(a + b)
+                            }
+
+                            result.shouldBeSuccess()
+                            result.value shouldBe 3
+                        }
                     }
 
-                    result.shouldBeSuccess()
-                    result.value shouldBe 3
+                    "when some function returns a failure" - {
+                        fun first(): Result<Int, Error> = 1.success()
+                        fun second(): Result<Int, Error> = Error.First.error()
+                        fun third(): Result<Int, Error> = Error.Second.error()
+
+                        "then the binding should return a first returned failure" {
+                            val result = Result {
+                                val (a) = first()
+                                val (b) = second()
+                                val (c) = third()
+                                success(a + b + c)
+                            }
+
+                            result.shouldBeError()
+                            result.cause shouldBe Error.First
+                        }
+                    }
                 }
-            }
 
-            "when some function involved is returned failure" - {
-                fun first(): Result<Int, Error> = 1.success()
-                fun second(): Result<Int, Error> = Error.First.error()
-                fun third(): Result<Int, Error> = Error.Second.error()
+                "when using a few levels of DSL" - {
 
-                "then binding should return a first failure" {
-                    val result = Result {
-                        val (a) = first()
-                        val (b) = second()
-                        val (c) = third()
-                        a + b + c
+                    "when every function returns a successful" - {
+                        fun first(): Result<Int, Error> = 1.success()
+                        fun second(): Result<Int, Error> = 2.success()
+                        fun third(): Result<String, Error> = "3".success()
+
+                        "then the binding should return a successful value" {
+                            val result = Result {
+                                val (a) = first()
+                                val (b) = second()
+                                val (d) = Result {
+                                    val (c) = third()
+                                    c.toInt().success()
+                                }
+                                success(a + b + d)
+                            }
+
+                            result.shouldBeSuccess()
+                            result.value shouldBe 6
+                        }
                     }
 
-                    result.shouldBeError()
-                    result.cause shouldBe Error.First
+                    "when some function at an internal nesting level returns an error" - {
+                        fun first(): Result<Int, Error> = 1.success()
+                        fun second(): Result<Int, Error> = 2.success()
+                        fun third(): Result<String, Error> = Error.First.error()
+
+                        "then the binding should return failure of an internal nesting level" {
+                            val result = Result {
+                                val (a) = first()
+                                val (b) = second()
+                                val (d) = Result {
+                                    val (c) = third()
+                                    c.toInt().success()
+                                }
+                                success(a + b + d)
+                            }
+
+                            result.shouldBeError()
+                            result.cause shouldBe Error.First
+                        }
+                    }
+
+                    "when every function at all nesting levels returns an error" - {
+                        fun first(): Result<Int, Error> = 1.success()
+                        fun second(): Result<Int, Error> = Error.First.error()
+                        fun third(): Result<String, Error> = Error.Second.error()
+
+                        "then the binding should return failure of a top-level" {
+                            val result = Result {
+                                val (a) = first()
+                                val (b) = second()
+                                val (d) = Result {
+                                    val (c) = third()
+                                    c.toInt().success()
+                                }
+                                success(a + b + d)
+                            }
+
+                            result.shouldBeError()
+                            result.cause shouldBe Error.First
+                        }
+                    }
                 }
             }
         }
