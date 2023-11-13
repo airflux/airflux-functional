@@ -32,6 +32,11 @@ public sealed class Result<out T, out E> {
 
     public data class Error<out E>(public val cause: E) : Result<Nothing, E>()
 
+    public interface FxScope<in E> {
+        public fun <T> Result<T, E>.bind(): T
+        public operator fun <T> Result<T, E>.component1(): T
+    }
+
     public companion object {
 
         public val asNull: Success<Nothing?> = Success(null)
@@ -40,11 +45,27 @@ public sealed class Result<out T, out E> {
 
         public val asFalse: Success<Boolean> = Success(false)
 
-        public fun of(value: Boolean): Success<Boolean> = if (value) asTrue else asFalse
-
         public val asUnit: Success<Unit> = Success(Unit)
 
         public val asEmptyList: Success<List<Nothing>> = Success(emptyList())
+
+        public fun of(value: Boolean): Success<Boolean> = if (value) asTrue else asFalse
+
+        @OptIn(ExperimentalContracts::class)
+        public inline fun <T, E> fx(block: FxScope<E>.() -> T): Result<T, E> {
+            contract {
+                callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+            }
+
+            val receiver = ResultFxScope<E>()
+            return try {
+                with(receiver) {
+                    block().success()
+                }
+            } catch (ignore: FxScopeException) {
+                receiver.error!!
+            }
+        }
     }
 }
 

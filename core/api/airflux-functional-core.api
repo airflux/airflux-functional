@@ -7,6 +7,7 @@ public abstract class io/github/airflux/functional/Result {
 }
 
 public final class io/github/airflux/functional/Result$Companion {
+	public final fun fx (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public final fun getAsEmptyList ()Lio/github/airflux/functional/Result$Success;
 	public final fun getAsFalse ()Lio/github/airflux/functional/Result$Success;
 	public final fun getAsNull ()Lio/github/airflux/functional/Result$Success;
@@ -26,6 +27,11 @@ public final class io/github/airflux/functional/Result$Error : io/github/airflux
 	public fun toString ()Ljava/lang/String;
 }
 
+public abstract interface class io/github/airflux/functional/Result$FxScope {
+	public abstract fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public abstract fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+}
+
 public final class io/github/airflux/functional/Result$Success : io/github/airflux/functional/Result {
 	public fun <init> (Ljava/lang/Object;)V
 	public final fun component1 ()Ljava/lang/Object;
@@ -37,9 +43,16 @@ public final class io/github/airflux/functional/Result$Success : io/github/airfl
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class io/github/airflux/functional/ResultFxScope : io/github/airflux/functional/Result$FxScope {
+	public fun <init> ()V
+	public fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public final fun getError ()Lio/github/airflux/functional/Result$Error;
+}
+
 public final class io/github/airflux/functional/ResultKt {
-	public static final fun bind (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public static final fun error (Ljava/lang/Object;)Lio/github/airflux/functional/Result$Error;
+	public static final fun flatMap (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public static final fun fold (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static final fun forEach (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)V
 	public static final fun getOrElse (Lio/github/airflux/functional/Result;Ljava/lang/Object;)Ljava/lang/Object;
@@ -90,7 +103,7 @@ public final class io/github/airflux/functional/Try$Success : io/github/airflux/
 }
 
 public final class io/github/airflux/functional/TryKt {
-	public static final fun bind (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
+	public static final fun flatMap (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
 	public static final fun fold (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static final fun getOrElse (Lio/github/airflux/functional/Try;Ljava/lang/Object;)Ljava/lang/Object;
 	public static final fun getOrElse (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
