@@ -79,7 +79,7 @@ public fun <T, E> Result<T, E>.isSuccess(): Boolean {
 }
 
 @OptIn(ExperimentalContracts::class)
-public fun <T, E> Result<T, E>.isSuccess(predicate: (T) -> Boolean): Boolean {
+public inline fun <T, E> Result<T, E>.isSuccess(predicate: (T) -> Boolean): Boolean {
     contract {
         returns(true) implies (this@isSuccess is Result.Success<T>)
         returns(false) implies (this@isSuccess is Result.Error<E>)
@@ -98,7 +98,7 @@ public fun <T, E> Result<T, E>.isError(): Boolean {
 }
 
 @OptIn(ExperimentalContracts::class)
-public fun <T, E> Result<T, E>.isError(predicate: (E) -> Boolean): Boolean {
+public inline fun <T, E> Result<T, E>.isError(predicate: (E) -> Boolean): Boolean {
     contract {
         returns(false) implies (this@isError is Result.Success<T>)
         returns(true) implies (this@isError is Result.Error<E>)
