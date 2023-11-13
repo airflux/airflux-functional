@@ -292,6 +292,32 @@ internal class ResultTest : FreeSpec() {
                 }
             }
 
+            "the `andThen` function" - {
+
+                "when a variable has the `Result#Success` type" - {
+                    val original: Result<String, Error> = ORIGINAL_VALUE.success()
+
+                    "then should return a result of invoke the [block]" {
+                        val result = original.andThen { result -> result.toInt().success() }
+
+                        result.shouldBeSuccess()
+                        result.value shouldBe ORIGINAL_VALUE.toInt()
+                    }
+                }
+
+                "when a variable has the `Result#Error` type" - {
+                    val original: Result<String, Error> = Error.Empty.error()
+
+                    "then should return an original do not invoke the [block]" {
+                        val result = original.andThen { success ->
+                            success.toInt().success()
+                        }
+
+                        result shouldBe original
+                    }
+                }
+            }
+
             "the `mapError` function" - {
 
                 "when a variable has the `Result#Success` type" - {

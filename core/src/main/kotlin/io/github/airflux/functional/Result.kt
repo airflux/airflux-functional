@@ -134,6 +134,14 @@ public inline infix fun <T, R, E> Result<T, E>.flatMap(transform: (T) -> Result<
 }
 
 @OptIn(ExperimentalContracts::class)
+public inline infix fun <T, R, E> Result<T, E>.andThen(block: (T) -> Result<R, E>): Result<R, E> {
+    contract {
+        callsInPlace(block, InvocationKind.AT_MOST_ONCE)
+    }
+    return if (isSuccess()) block(value) else this
+}
+
+@OptIn(ExperimentalContracts::class)
 public inline infix fun <T, E, R> Result<T, E>.mapError(transform: (E) -> R): Result<T, R> {
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
