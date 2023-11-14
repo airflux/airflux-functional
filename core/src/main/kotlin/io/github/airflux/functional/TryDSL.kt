@@ -56,6 +56,10 @@ internal class TryRaise : Try.Raise {
         raise(Try.Failure(exception))
     }
 
+    override fun <T> Try<T>.raise() {
+        if (isSuccess()) Unit else raise(this)
+    }
+
     private fun <T> raise(failure: Try<T>): Nothing {
         throw RaiseException(failure, this)
     }

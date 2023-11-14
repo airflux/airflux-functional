@@ -26,7 +26,7 @@ internal class TryDSLTest : FreeSpec() {
     init {
         "The DSL" - {
 
-            "the function `run`" - {
+            "the function `Try`" - {
 
                 "when using one level of DSL" - {
 
@@ -160,6 +160,34 @@ internal class TryDSLTest : FreeSpec() {
                             result.shouldBeError()
                             result.exception shouldBe FirstException
                         }
+                    }
+                }
+
+                "when a function returns a successful" - {
+                    fun first(): Try<Int> = Try.Success(FIRST_VALUE)
+
+                    "then calling the `raise` function should have no effect" {
+                        val result: Try<Int> = Try {
+                            first().raise()
+                            SECOND_VALUE
+                        }
+
+                        result.shouldBeSuccess()
+                        result.result shouldBe SECOND_VALUE
+                    }
+                }
+
+                "when a function returns an error" - {
+                    fun first(): Try<Int> = Try.Failure(FirstException)
+
+                    "then calling the `raise` function should return an error" {
+                        val result: Try<Int> = Try {
+                            first().raise()
+                            SECOND_VALUE
+                        }
+
+                        result.shouldBeError()
+                        result.exception shouldBe FirstException
                     }
                 }
             }

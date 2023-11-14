@@ -54,6 +54,10 @@ internal class ResultRaise<E> : Result.Raise<E> {
         raise(Result.Error(error))
     }
 
+    override fun <T> Result<T, E>.raise() {
+        if (isSuccess()) Unit else raise(this)
+    }
+
     private fun raise(error: Result.Error<E>): Nothing {
         throw RaiseException(error, this)
     }

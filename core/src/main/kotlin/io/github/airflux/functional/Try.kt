@@ -32,6 +32,7 @@ public sealed class Try<out T> {
         public fun <T> Try<T>.bind(): T
         public operator fun <T> Try<T>.component1(): T = bind()
         public fun raise(exception: Throwable): Nothing
+        public fun <T> Try<T>.raise()
     }
 
     public companion object {

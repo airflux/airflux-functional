@@ -35,7 +35,7 @@ internal class ResultDSLTest : FreeSpec() {
 
                         "when the execution result of a block is successful" - {
 
-                            "then the binding should return a successful value" {
+                            "then should return a successful value" {
                                 val result: Result<Int, Error> = Result {
                                     val (a) = first()
                                     val (b) = second()
@@ -68,7 +68,7 @@ internal class ResultDSLTest : FreeSpec() {
                         fun second(): Result<Int, Error> = Error.First.error()
                         fun third(): Result<Int, Error> = Error.Second.error()
 
-                        "then the binding should return a first returned failure" {
+                        "then should return a first returned failure" {
                             val result = Result {
                                 val (a) = first()
                                 val (b) = second()
@@ -89,7 +89,7 @@ internal class ResultDSLTest : FreeSpec() {
                         fun second(): Result<Int, Error> = SECOND_VALUE.success()
                         fun third(): Result<String, Error> = "3".success()
 
-                        "then the binding should return a successful value" {
+                        "then should return a successful value" {
                             val result = Result {
                                 val (a) = first()
                                 val (b) = second()
@@ -110,7 +110,7 @@ internal class ResultDSLTest : FreeSpec() {
                         fun second(): Result<Int, Error> = SECOND_VALUE.success()
                         fun third(): Result<String, Error> = Error.First.error()
 
-                        "then the binding should return failure of an internal nesting level" {
+                        "then should return failure of an internal nesting level" {
                             val result = Result {
                                 val (a) = first()
                                 val (b) = second()
@@ -131,7 +131,7 @@ internal class ResultDSLTest : FreeSpec() {
                         fun second(): Result<Int, Error> = Error.First.error()
                         fun third(): Result<String, Error> = Error.Second.error()
 
-                        "then the binding should return failure of a top-level" {
+                        "then should return failure of a top-level" {
                             val result = Result {
                                 val (a) = first()
                                 val (b) = second()
@@ -145,6 +145,34 @@ internal class ResultDSLTest : FreeSpec() {
                             result.shouldBeError()
                             result.cause shouldBe Error.First
                         }
+                    }
+                }
+
+                "when a function returns a successful" - {
+                    fun first(): Result<Int, Error> = FIRST_VALUE.success()
+
+                    "then calling the `raise` function should have no effect" {
+                        val result: Result<Int, Error> = Result {
+                            first().raise()
+                            SECOND_VALUE
+                        }
+
+                        result.shouldBeSuccess()
+                        result.value shouldBe SECOND_VALUE
+                    }
+                }
+
+                "when a function returns an error" - {
+                    fun first(): Result<Int, Error> = Error.First.error()
+
+                    "then calling the `raise` function should return an error" {
+                        val result: Result<Int, Error> = Result {
+                            first().raise()
+                            SECOND_VALUE
+                        }
+
+                        result.shouldBeError()
+                        result.cause shouldBe Error.First
                     }
                 }
             }

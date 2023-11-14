@@ -36,6 +36,7 @@ public final class io/github/airflux/functional/Result$Error : io/github/airflux
 public abstract interface class io/github/airflux/functional/Result$Raise : io/github/airflux/functional/BasicRaise {
 	public abstract fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
 	public fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public abstract fun raise (Lio/github/airflux/functional/Result;)V
 	public abstract fun raise (Ljava/lang/Object;)Ljava/lang/Void;
 }
 
@@ -88,6 +89,7 @@ public final class io/github/airflux/functional/ResultKt {
 public final class io/github/airflux/functional/ResultRaise : io/github/airflux/functional/Result$Raise {
 	public fun <init> ()V
 	public fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public fun raise (Lio/github/airflux/functional/Result;)V
 	public fun raise (Ljava/lang/Object;)Ljava/lang/Void;
 }
 
@@ -114,6 +116,7 @@ public final class io/github/airflux/functional/Try$Failure : io/github/airflux/
 public abstract interface class io/github/airflux/functional/Try$Raise : io/github/airflux/functional/BasicRaise {
 	public abstract fun bind (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
 	public fun component1 (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
+	public abstract fun raise (Lio/github/airflux/functional/Try;)V
 	public abstract fun raise (Ljava/lang/Throwable;)Ljava/lang/Void;
 }
 
@@ -157,6 +160,7 @@ public final class io/github/airflux/functional/TryKt {
 public final class io/github/airflux/functional/TryRaise : io/github/airflux/functional/Try$Raise {
 	public fun <init> ()V
 	public fun bind (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
+	public fun raise (Lio/github/airflux/functional/Try;)V
 	public fun raise (Ljava/lang/Throwable;)Ljava/lang/Void;
 }
 

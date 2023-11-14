@@ -42,6 +42,7 @@ public sealed class Result<out T, out E> {
         public fun <T> Result<T, E>.bind(): T
         public operator fun <T> Result<T, E>.component1(): T = bind()
         public fun raise(error: E): Nothing
+        public fun <T> Result<T, E>.raise()
     }
 
     public companion object {
