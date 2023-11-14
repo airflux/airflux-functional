@@ -25,7 +25,7 @@ internal class ResultDSLTest : FreeSpec() {
     init {
         "The DSL" - {
 
-            "the function `Result`" - {
+            "the function `run`" - {
 
                 "when using one level of DSL" - {
 
@@ -34,10 +34,10 @@ internal class ResultDSLTest : FreeSpec() {
                         fun second(): Result<Int, Error> = 2.success()
 
                         "then the binding should return a successful value" {
-                            val result: Result<Int, Error> = Result {
+                            val result: Result<Int, Error> = Result.run {
                                 val (a) = first()
                                 val (b) = second()
-                                success(a + b)
+                                a + b
                             }
 
                             result.shouldBeSuccess()
@@ -51,11 +51,11 @@ internal class ResultDSLTest : FreeSpec() {
                         fun third(): Result<Int, Error> = Error.Second.error()
 
                         "then the binding should return a first returned failure" {
-                            val result = Result {
+                            val result = Result.run {
                                 val (a) = first()
                                 val (b) = second()
                                 val (c) = third()
-                                success(a + b + c)
+                                a + b + c
                             }
 
                             result.shouldBeError()
@@ -72,14 +72,14 @@ internal class ResultDSLTest : FreeSpec() {
                         fun third(): Result<String, Error> = "3".success()
 
                         "then the binding should return a successful value" {
-                            val result = Result {
+                            val result = Result.run {
                                 val (a) = first()
                                 val (b) = second()
-                                val (d) = Result {
+                                val (d) = Result.run {
                                     val (c) = third()
-                                    c.toInt().success()
+                                    c.toInt()
                                 }
-                                success(a + b + d)
+                                a + b + d
                             }
 
                             result.shouldBeSuccess()
@@ -93,14 +93,14 @@ internal class ResultDSLTest : FreeSpec() {
                         fun third(): Result<String, Error> = Error.First.error()
 
                         "then the binding should return failure of an internal nesting level" {
-                            val result = Result {
+                            val result = Result.run {
                                 val (a) = first()
                                 val (b) = second()
-                                val (d) = Result {
+                                val (d) = Result.run {
                                     val (c) = third()
-                                    c.toInt().success()
+                                    c.toInt()
                                 }
-                                success(a + b + d)
+                                a + b + d
                             }
 
                             result.shouldBeError()
@@ -114,14 +114,14 @@ internal class ResultDSLTest : FreeSpec() {
                         fun third(): Result<String, Error> = Error.Second.error()
 
                         "then the binding should return failure of a top-level" {
-                            val result = Result {
+                            val result = Result.run {
                                 val (a) = first()
                                 val (b) = second()
-                                val (d) = Result {
+                                val (d) = Result.run {
                                     val (c) = third()
-                                    c.toInt().success()
+                                    c.toInt()
                                 }
-                                success(a + b + d)
+                                a + b + d
                             }
 
                             result.shouldBeError()

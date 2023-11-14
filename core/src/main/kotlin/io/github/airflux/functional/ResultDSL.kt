@@ -19,11 +19,20 @@ package io.github.airflux.functional
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import kotlin.experimental.ExperimentalTypeInference
 
 @Suppress("FunctionNaming")
-@OptIn(ExperimentalContracts::class, ExperimentalTypeInference::class)
-public inline fun <T, E> Result(@BuilderInference block: Result.Raise<E>.() -> Result<T, E>): Result<T, E> {
+@OptIn(ExperimentalContracts::class)
+public inline fun <T, E> Result.Companion.run(block: Result.Raise<E>.() -> T): Result<T, E> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return runWith { block().success() }
+}
+
+@Suppress("FunctionNaming")
+@OptIn(ExperimentalContracts::class)
+public inline fun <T, E> Result.Companion.runWith(block: Result.Raise<E>.() -> Result<T, E>): Result<T, E> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }

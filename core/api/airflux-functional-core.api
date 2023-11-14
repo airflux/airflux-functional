@@ -43,8 +43,9 @@ public final class io/github/airflux/functional/Result$Success : io/github/airfl
 }
 
 public final class io/github/airflux/functional/ResultDSLKt {
-	public static final fun Result (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public static final fun failureOrRethrow (Lio/github/airflux/functional/ResultRaiseException;Lio/github/airflux/functional/ResultRaise;)Lio/github/airflux/functional/Result$Error;
+	public static final fun run (Lio/github/airflux/functional/Result$Companion;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
+	public static final fun runWith (Lio/github/airflux/functional/Result$Companion;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 }
 
 public final class io/github/airflux/functional/ResultKt {
