@@ -28,7 +28,7 @@ public sealed class Try<out T> {
 
     public class Failure(public val exception: Throwable) : Try<Nothing>()
 
-    public interface Raise {
+    public interface Raise : BasicRaise {
         public fun <T> Try<T>.bind(): T
         public operator fun <T> Try<T>.component1(): T = bind()
         public fun raise(exception: Throwable): Nothing

@@ -31,8 +31,8 @@ internal class TryDSLTest : FreeSpec() {
                 "when using one level of DSL" - {
 
                     "when every function returns a successful" - {
-                        fun first(): Try<Int> = Try.Success(1)
-                        fun second(): Try<Int> = Try.Success(0)
+                        fun first(): Try<Int> = Try.Success(FIRST_VALUE)
+                        fun second(): Try<Int> = Try.Success(SECOND_VALUE)
 
                         "when the execution result of a block is successful" - {
 
@@ -44,7 +44,7 @@ internal class TryDSLTest : FreeSpec() {
                                 }
 
                                 result.shouldBeSuccess()
-                                result.result shouldBe 1
+                                result.result shouldBe FIRST_VALUE + SECOND_VALUE
                             }
                         }
 
@@ -54,7 +54,7 @@ internal class TryDSLTest : FreeSpec() {
                                 val result: Try<Int> = Try {
                                     val (a) = first()
                                     val (b) = second()
-                                    a / b
+                                    a / (b - SECOND_VALUE)
                                 }
 
                                 result.shouldBeError()
@@ -62,13 +62,14 @@ internal class TryDSLTest : FreeSpec() {
                             }
                         }
 
-                        "when the execution result of a block is raise" - {
+                        "when in a block calling the `raise` method" - {
 
-                            "then the binding should return a failure value" {
+                            "then should return a failure value" {
                                 val result = Try {
                                     val (a) = first()
                                     val (b) = second()
-                                    if (b == 0) raise(IllegalArgumentException("b == 0")) else a / b
+                                    if (b == SECOND_VALUE) raise(IllegalArgumentException())
+                                    a + b
                                 }
 
                                 result.shouldBeError()
@@ -78,7 +79,7 @@ internal class TryDSLTest : FreeSpec() {
                     }
 
                     "when some function returns a failure" - {
-                        fun first(): Try<Int> = Try.Success(1)
+                        fun first(): Try<Int> = Try.Success(FIRST_VALUE)
                         fun second(): Try<Int> = Try.Failure(FirstException)
                         fun third(): Try<Int> = Try.Failure(SecondException)
 
@@ -99,8 +100,8 @@ internal class TryDSLTest : FreeSpec() {
                 "when using a few levels of DSL" - {
 
                     "when every function returns a successful" - {
-                        fun first(): Try<Int> = Try.Success(1)
-                        fun second(): Try<Int> = Try.Success(2)
+                        fun first(): Try<Int> = Try.Success(FIRST_VALUE)
+                        fun second(): Try<Int> = Try.Success(SECOND_VALUE)
                         fun third(): Try<String> = Try.Success("3")
 
                         "then the binding should return a successful value" {
@@ -120,8 +121,8 @@ internal class TryDSLTest : FreeSpec() {
                     }
 
                     "when some function at an internal nesting level returns a failure" - {
-                        fun first(): Try<Int> = Try.Success(1)
-                        fun second(): Try<Int> = Try.Success(2)
+                        fun first(): Try<Int> = Try.Success(FIRST_VALUE)
+                        fun second(): Try<Int> = Try.Success(SECOND_VALUE)
                         fun third(): Try<String> = Try.Failure(FirstException)
 
                         "then the binding should return failure of an internal nesting level" {
@@ -141,7 +142,7 @@ internal class TryDSLTest : FreeSpec() {
                     }
 
                     "when every function at all nesting levels returns a failure" - {
-                        fun first(): Try<Int> = Try.Success(1)
+                        fun first(): Try<Int> = Try.Success(FIRST_VALUE)
                         fun second(): Try<Int> = Try.Failure(FirstException)
                         fun third(): Try<String> = Try.Failure(SecondException)
 
@@ -167,4 +168,9 @@ internal class TryDSLTest : FreeSpec() {
 
     internal object FirstException : RuntimeException()
     internal object SecondException : RuntimeException()
+
+    private companion object {
+        private const val FIRST_VALUE = 1
+        private const val SECOND_VALUE = 2
+    }
 }

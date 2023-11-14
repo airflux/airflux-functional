@@ -1,5 +1,12 @@
+public abstract interface class io/github/airflux/functional/BasicRaise {
+}
+
 public final class io/github/airflux/functional/NonFatalKt {
 	public static final fun isFatal (Ljava/lang/Throwable;)Z
+}
+
+public final class io/github/airflux/functional/RaiseKt {
+	public static final fun failureOrRethrow (Ljava/util/concurrent/CancellationException;Lio/github/airflux/functional/BasicRaise;)Ljava/lang/Object;
 }
 
 public abstract class io/github/airflux/functional/Result {
@@ -26,9 +33,10 @@ public final class io/github/airflux/functional/Result$Error : io/github/airflux
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract interface class io/github/airflux/functional/Result$Raise {
+public abstract interface class io/github/airflux/functional/Result$Raise : io/github/airflux/functional/BasicRaise {
 	public abstract fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
 	public fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public abstract fun raise (Ljava/lang/Object;)Ljava/lang/Void;
 }
 
 public final class io/github/airflux/functional/Result$Success : io/github/airflux/functional/Result {
@@ -45,7 +53,6 @@ public final class io/github/airflux/functional/Result$Success : io/github/airfl
 public final class io/github/airflux/functional/ResultDSLKt {
 	public static final fun Result (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public static final fun ResultWith (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
-	public static final fun failureOrRethrow (Lio/github/airflux/functional/ResultRaiseException;Lio/github/airflux/functional/ResultRaise;)Lio/github/airflux/functional/Result$Error;
 }
 
 public final class io/github/airflux/functional/ResultKt {
@@ -81,6 +88,7 @@ public final class io/github/airflux/functional/ResultKt {
 public final class io/github/airflux/functional/ResultRaise : io/github/airflux/functional/Result$Raise {
 	public fun <init> ()V
 	public fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public fun raise (Ljava/lang/Object;)Ljava/lang/Void;
 }
 
 public abstract class io/github/airflux/functional/Try {
@@ -103,7 +111,7 @@ public final class io/github/airflux/functional/Try$Failure : io/github/airflux/
 	public final fun getException ()Ljava/lang/Throwable;
 }
 
-public abstract interface class io/github/airflux/functional/Try$Raise {
+public abstract interface class io/github/airflux/functional/Try$Raise : io/github/airflux/functional/BasicRaise {
 	public abstract fun bind (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
 	public fun component1 (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
 	public abstract fun raise (Ljava/lang/Throwable;)Ljava/lang/Void;
@@ -116,8 +124,7 @@ public final class io/github/airflux/functional/Try$Success : io/github/airflux/
 
 public final class io/github/airflux/functional/TryDSLKt {
 	public static final fun Try (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
-	public static final fun failureOrRethrow (Lio/github/airflux/functional/TryRaiseException;Lio/github/airflux/functional/TryRaise;)Lio/github/airflux/functional/Try;
-	public static final fun tryWith (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
+	public static final fun TryWith (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
 }
 
 public final class io/github/airflux/functional/TryExtensionsKt {

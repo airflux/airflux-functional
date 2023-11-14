@@ -40,7 +40,7 @@ public inline fun <T, E> ResultWith(block: Result.Raise<E>.() -> Result<T, E>): 
     val raise = ResultRaise<E>()
     return try {
         block(raise)
-    } catch (expected: ResultRaiseException) {
+    } catch (expected: RaiseException) {
         expected.failureOrRethrow(raise)
     }
 }
@@ -50,17 +50,11 @@ internal class ResultRaise<E> : Result.Raise<E> {
 
     override fun <T> Result<T, E>.bind(): T = if (isSuccess()) value else raise(this)
 
+    override fun raise(error: E): Nothing {
+        raise(Result.Error(error))
+    }
+
     private fun raise(error: Result.Error<E>): Nothing {
-        throw ResultRaiseException(error, this)
+        throw RaiseException(error, this)
     }
 }
-
-internal class ResultRaiseException(val failure: Any, val raise: ResultRaise<*>) : IllegalStateException()
-
-@PublishedApi
-internal fun <E> ResultRaiseException.failureOrRethrow(raise: ResultRaise<E>): Result.Error<E> =
-    if (this.raise === raise)
-        @Suppress("UNCHECKED_CAST")
-        failure as Result.Error<E>
-    else
-        throw this

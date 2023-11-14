@@ -38,9 +38,10 @@ public sealed class Result<out T, out E> {
 
     public data class Error<out E>(public val cause: E) : Result<Nothing, E>()
 
-    public interface Raise<E> {
+    public interface Raise<E> : BasicRaise {
         public fun <T> Result<T, E>.bind(): T
         public operator fun <T> Result<T, E>.component1(): T = bind()
+        public fun raise(error: E): Nothing
     }
 
     public companion object {

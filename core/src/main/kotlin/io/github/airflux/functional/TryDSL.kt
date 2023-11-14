@@ -40,7 +40,7 @@ public inline fun <T> TryWith(block: Try.Raise.() -> Try<T>): Try<T> {
     val raise = TryRaise()
     return try {
         block(raise)
-    } catch (expected: TryRaiseException) {
+    } catch (expected: RaiseException) {
         expected.failureOrRethrow(raise)
     } catch (expected: Throwable) {
         if (expected.isFatal()) throw expected else Try.Failure(expected)
@@ -57,16 +57,6 @@ internal class TryRaise : Try.Raise {
     }
 
     private fun <T> raise(failure: Try<T>): Nothing {
-        throw TryRaiseException(failure, this)
+        throw RaiseException(failure, this)
     }
 }
-
-internal class TryRaiseException(val failure: Any, val raise: TryRaise) : IllegalStateException()
-
-@PublishedApi
-internal fun <T> TryRaiseException.failureOrRethrow(raise: TryRaise): Try<T> =
-    if (this.raise === raise)
-        @Suppress("UNCHECKED_CAST")
-        failure as Try<T>
-    else
-        throw this
