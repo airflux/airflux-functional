@@ -23,12 +23,12 @@ import kotlin.experimental.ExperimentalTypeInference
 
 @Suppress("FunctionNaming")
 @OptIn(ExperimentalContracts::class, ExperimentalTypeInference::class)
-public inline fun <T, E> Result(@BuilderInference block: Result.Builder<E>.() -> Result<T, E>): Result<T, E> {
+public inline fun <T, E> Result(@BuilderInference block: Result.Raise<E>.() -> Result<T, E>): Result<T, E> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val raise = ResultBuilder<E>()
+    val raise = ResultRaise<E>()
     return try {
         block(raise)
     } catch (expected: ResultRaiseException) {
@@ -37,21 +37,19 @@ public inline fun <T, E> Result(@BuilderInference block: Result.Builder<E>.() ->
 }
 
 @PublishedApi
-internal class ResultBuilder<E> : Result.Builder<E> {
+internal class ResultRaise<E> : Result.Raise<E> {
 
     override fun <V> Result<V, E>.bind(): V = if (isSuccess()) value else raise(this)
-
-    override fun <T> Result<T, E>.component1(): T = bind()
 
     private fun raise(error: Result.Error<E>): Nothing {
         throw ResultRaiseException(error, this)
     }
 }
 
-internal class ResultRaiseException(val failure: Any, val raise: ResultBuilder<*>) : IllegalStateException()
+internal class ResultRaiseException(val failure: Any, val raise: ResultRaise<*>) : IllegalStateException()
 
 @PublishedApi
-internal fun <E> ResultRaiseException.failureOrRethrow(raise: ResultBuilder<E>): Result.Error<E> =
+internal fun <E> ResultRaiseException.failureOrRethrow(raise: ResultRaise<E>): Result.Error<E> =
     if (this.raise === raise)
         @Suppress("UNCHECKED_CAST")
         failure as Result.Error<E>

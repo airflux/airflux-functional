@@ -6,11 +6,6 @@ public abstract class io/github/airflux/functional/Result {
 	public static final field Companion Lio/github/airflux/functional/Result$Companion;
 }
 
-public abstract interface class io/github/airflux/functional/Result$Builder {
-	public abstract fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
-	public abstract fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
-}
-
 public final class io/github/airflux/functional/Result$Companion {
 	public final fun getAsEmptyList ()Lio/github/airflux/functional/Result$Success;
 	public final fun getAsFalse ()Lio/github/airflux/functional/Result$Success;
@@ -31,6 +26,11 @@ public final class io/github/airflux/functional/Result$Error : io/github/airflux
 	public fun toString ()Ljava/lang/String;
 }
 
+public abstract interface class io/github/airflux/functional/Result$Raise {
+	public abstract fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+	public fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+}
+
 public final class io/github/airflux/functional/Result$Success : io/github/airflux/functional/Result {
 	public fun <init> (Ljava/lang/Object;)V
 	public final fun component1 ()Ljava/lang/Object;
@@ -42,15 +42,9 @@ public final class io/github/airflux/functional/Result$Success : io/github/airfl
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class io/github/airflux/functional/ResultBuilder : io/github/airflux/functional/Result$Builder {
-	public fun <init> ()V
-	public fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
-	public fun component1 (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
-}
-
 public final class io/github/airflux/functional/ResultDSLKt {
 	public static final fun Result (Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
-	public static final fun failureOrRethrow (Lio/github/airflux/functional/ResultRaiseException;Lio/github/airflux/functional/ResultBuilder;)Lio/github/airflux/functional/Result$Error;
+	public static final fun failureOrRethrow (Lio/github/airflux/functional/ResultRaiseException;Lio/github/airflux/functional/ResultRaise;)Lio/github/airflux/functional/Result$Error;
 }
 
 public final class io/github/airflux/functional/ResultKt {
@@ -83,6 +77,11 @@ public final class io/github/airflux/functional/ResultKt {
 	public static final fun traverse (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 }
 
+public final class io/github/airflux/functional/ResultRaise : io/github/airflux/functional/Result$Raise {
+	public fun <init> ()V
+	public fun bind (Lio/github/airflux/functional/Result;)Ljava/lang/Object;
+}
+
 public abstract class io/github/airflux/functional/Try {
 	public static final field Companion Lio/github/airflux/functional/Try$Companion;
 }
@@ -94,8 +93,8 @@ public final class io/github/airflux/functional/Try$Companion {
 	public final fun getAsTrue ()Lio/github/airflux/functional/Try;
 	public final fun getAsUnit ()Lio/github/airflux/functional/Try;
 	public final fun of (Z)Lio/github/airflux/functional/Try;
-	public final fun tryRun (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
-	public final fun tryRunWith (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
+	public final fun wrap (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
+	public final fun wrapWith (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
 }
 
 public final class io/github/airflux/functional/Try$Failure : io/github/airflux/functional/Try {
