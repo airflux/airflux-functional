@@ -22,17 +22,17 @@ import kotlin.contracts.contract
 
 @Suppress("FunctionNaming")
 @OptIn(ExperimentalContracts::class)
-public inline fun <T, E> Result.Companion.run(block: Result.Raise<E>.() -> T): Result<T, E> {
+public inline fun <T, E> Result(block: Result.Raise<E>.() -> T): Result<T, E> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return runWith { block().success() }
+    return ResultWith { block().success() }
 }
 
 @Suppress("FunctionNaming")
 @OptIn(ExperimentalContracts::class)
-public inline fun <T, E> Result.Companion.runWith(block: Result.Raise<E>.() -> Result<T, E>): Result<T, E> {
+public inline fun <T, E> ResultWith(block: Result.Raise<E>.() -> Result<T, E>): Result<T, E> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
@@ -48,7 +48,7 @@ public inline fun <T, E> Result.Companion.runWith(block: Result.Raise<E>.() -> R
 @PublishedApi
 internal class ResultRaise<E> : Result.Raise<E> {
 
-    override fun <V> Result<V, E>.bind(): V = if (isSuccess()) value else raise(this)
+    override fun <T> Result<T, E>.bind(): T = if (isSuccess()) value else raise(this)
 
     private fun raise(error: Result.Error<E>): Nothing {
         throw ResultRaiseException(error, this)

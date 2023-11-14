@@ -37,7 +37,7 @@ internal class TryDSLTest : FreeSpec() {
                         "when the execution result of a block is successful" - {
 
                             "then the binding should return a successful value" {
-                                val result: Try<Int> = Try.run {
+                                val result: Try<Int> = Try {
                                     val (a) = first()
                                     val (b) = second()
                                     a + b
@@ -51,7 +51,7 @@ internal class TryDSLTest : FreeSpec() {
                         "when the execution result of a block is failure" - {
 
                             "then the binding should return a failure value" {
-                                val result: Try<Int> = Try.run {
+                                val result: Try<Int> = Try {
                                     val (a) = first()
                                     val (b) = second()
                                     a / b
@@ -65,7 +65,7 @@ internal class TryDSLTest : FreeSpec() {
                         "when the execution result of a block is raise" - {
 
                             "then the binding should return a failure value" {
-                                val result = Try.run {
+                                val result = Try {
                                     val (a) = first()
                                     val (b) = second()
                                     if (b == 0) raise(IllegalArgumentException("b == 0")) else a / b
@@ -83,7 +83,7 @@ internal class TryDSLTest : FreeSpec() {
                         fun third(): Try<Int> = Try.Failure(SecondException)
 
                         "then the binding should return a first returned failure" {
-                            val result = Try.run {
+                            val result = Try {
                                 val (a) = first()
                                 val (b) = second()
                                 val (c) = third()
@@ -104,10 +104,10 @@ internal class TryDSLTest : FreeSpec() {
                         fun third(): Try<String> = Try.Success("3")
 
                         "then the binding should return a successful value" {
-                            val result = Try.run {
+                            val result = Try {
                                 val (a) = first()
                                 val (b) = second()
-                                val (d) = Try.run {
+                                val (d) = Try {
                                     val (c) = third()
                                     c.toInt()
                                 }
@@ -125,10 +125,10 @@ internal class TryDSLTest : FreeSpec() {
                         fun third(): Try<String> = Try.Failure(FirstException)
 
                         "then the binding should return failure of an internal nesting level" {
-                            val result = Try.run {
+                            val result = Try {
                                 val (a) = first()
                                 val (b) = second()
-                                val (d) = Try.run {
+                                val (d) = Try {
                                     val (c) = third()
                                     c.toInt()
                                 }
@@ -146,10 +146,10 @@ internal class TryDSLTest : FreeSpec() {
                         fun third(): Try<String> = Try.Failure(SecondException)
 
                         "then the binding should return failure of a top-level" {
-                            val result = Try.run {
+                            val result = Try {
                                 val (a) = first()
                                 val (b) = second()
-                                val (d) = Try.run {
+                                val (d) = Try {
                                     val (c) = third()
                                     c.toInt()
                                 }

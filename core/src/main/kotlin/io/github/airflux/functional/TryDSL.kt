@@ -20,17 +20,19 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+@Suppress("FunctionNaming")
 @OptIn(ExperimentalContracts::class)
-public inline fun <T> Try.Companion.run(block: Try.Raise.() -> T): Try<T> {
+public inline fun <T> Try(block: Try.Raise.() -> T): Try<T> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return runWith { Try.Success(block()) }
+    return TryWith { Try.Success(block()) }
 }
 
+@Suppress("FunctionNaming")
 @OptIn(ExperimentalContracts::class)
-public inline fun <T> Try.Companion.runWith(block: Try.Raise.() -> Try<T>): Try<T> {
+public inline fun <T> TryWith(block: Try.Raise.() -> Try<T>): Try<T> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
