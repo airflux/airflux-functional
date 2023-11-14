@@ -28,17 +28,13 @@ public sealed class Try<out T> {
 
     public class Failure(public val exception: Throwable) : Try<Nothing>()
 
-    public companion object {
+    public interface Raise {
+        public fun <T> Try<T>.bind(): T
+        public operator fun <T> Try<T>.component1(): T = bind()
+        public fun raise(exception: Throwable): Nothing
+    }
 
-        public inline operator fun <T> invoke(block: () -> T): Try<T> =
-            try {
-                Success(block())
-            } catch (expected: Throwable) {
-                if (expected.isFatal())
-                    throw expected
-                else
-                    Failure(expected)
-            }
+    public companion object {
 
         public val asNull: Try<Nothing?> = Success(null)
 
@@ -53,12 +49,26 @@ public sealed class Try<out T> {
         public fun of(value: Boolean): Try<Boolean> = if (value) asTrue else asFalse
 
         @PublishedApi
-        internal inline fun <T> tryRun(block: () -> Try<T>): Try<T> =
-            try {
+        @OptIn(ExperimentalContracts::class)
+        internal inline fun <T> wrap(block: () -> T): Try<T> {
+            contract {
+                callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+            }
+            return wrapWith { Success(block()) }
+        }
+
+        @PublishedApi
+        @OptIn(ExperimentalContracts::class)
+        internal inline fun <T> wrapWith(block: () -> Try<T>): Try<T> {
+            contract {
+                callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+            }
+            return try {
                 block()
             } catch (expected: Throwable) {
                 if (expected.isFatal()) throw expected else Failure(expected)
             }
+        }
     }
 }
 
@@ -114,7 +124,7 @@ public inline infix fun <T, R> Try<T>.map(transform: (T) -> R): Try<R> {
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) Try { transform(this.result) } else this
+    return if (isSuccess()) Try.wrap { transform(this.result) } else this
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -122,7 +132,7 @@ public inline infix fun <T, R> Try<T>.flatMap(transform: (T) -> Try<R>): Try<R> 
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) Try.tryRun { transform(result) } else this
+    return if (isSuccess()) Try.wrapWith { transform(result) } else this
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -146,7 +156,7 @@ public inline infix fun <T> Try<T>.recover(block: (Throwable) -> T): Try<T> {
     contract {
         callsInPlace(block, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) this else Try { block(exception) }
+    return if (isSuccess()) this else Try.wrap { block(exception) }
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -154,7 +164,7 @@ public inline infix fun <T> Try<T>.recoverWith(block: (Throwable) -> Try<T>): Tr
     contract {
         callsInPlace(block, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) this else Try.tryRun { block(exception) }
+    return if (isSuccess()) this else Try.wrapWith { block(exception) }
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -182,7 +192,7 @@ public inline infix fun <T> Try<T>.orElse(default: () -> Try<T>): Try<T> {
     contract {
         callsInPlace(default, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) this else Try.tryRun { default() }
+    return if (isSuccess()) this else Try.wrapWith { default() }
 }
 
 public fun <T> Try<T>.orThrow(): T = if (isSuccess()) result else throw exception

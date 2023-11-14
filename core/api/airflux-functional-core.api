@@ -93,9 +93,9 @@ public final class io/github/airflux/functional/Try$Companion {
 	public final fun getAsNull ()Lio/github/airflux/functional/Try;
 	public final fun getAsTrue ()Lio/github/airflux/functional/Try;
 	public final fun getAsUnit ()Lio/github/airflux/functional/Try;
-	public final fun invoke (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
 	public final fun of (Z)Lio/github/airflux/functional/Try;
 	public final fun tryRun (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
+	public final fun tryRunWith (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
 }
 
 public final class io/github/airflux/functional/Try$Failure : io/github/airflux/functional/Try {
@@ -103,9 +103,21 @@ public final class io/github/airflux/functional/Try$Failure : io/github/airflux/
 	public final fun getException ()Ljava/lang/Throwable;
 }
 
+public abstract interface class io/github/airflux/functional/Try$Raise {
+	public abstract fun bind (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
+	public fun component1 (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
+	public abstract fun raise (Ljava/lang/Throwable;)Ljava/lang/Void;
+}
+
 public final class io/github/airflux/functional/Try$Success : io/github/airflux/functional/Try {
 	public fun <init> (Ljava/lang/Object;)V
 	public final fun getResult ()Ljava/lang/Object;
+}
+
+public final class io/github/airflux/functional/TryDSLKt {
+	public static final fun failureOrRethrow (Lio/github/airflux/functional/TryRaiseException;Lio/github/airflux/functional/TryRaise;)Lio/github/airflux/functional/Try;
+	public static final fun run (Lio/github/airflux/functional/Try$Companion;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
+	public static final fun runWith (Lio/github/airflux/functional/Try$Companion;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
 }
 
 public final class io/github/airflux/functional/TryExtensionsKt {
@@ -133,5 +145,11 @@ public final class io/github/airflux/functional/TryKt {
 	public static final fun recoverWith (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
 	public static final fun sequence (Ljava/lang/Iterable;)Lio/github/airflux/functional/Try;
 	public static final fun traverse (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;
+}
+
+public final class io/github/airflux/functional/TryRaise : io/github/airflux/functional/Try$Raise {
+	public fun <init> ()V
+	public fun bind (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
+	public fun raise (Ljava/lang/Throwable;)Ljava/lang/Void;
 }
 
