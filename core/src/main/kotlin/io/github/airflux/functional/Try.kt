@@ -67,7 +67,7 @@ public sealed class Try<out T> {
             return try {
                 block()
             } catch (expected: Throwable) {
-                if (expected.isFatal()) throw expected else Failure(expected)
+                expected.nonFatalOrRethrow()
             }
         }
     }

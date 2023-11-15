@@ -43,7 +43,7 @@ public inline fun <T> TryWith(block: Try.Raise.() -> Try<T>): Try<T> {
     } catch (expected: RaiseException) {
         expected.failureOrRethrow(raise)
     } catch (expected: Throwable) {
-        if (expected.isFatal()) throw expected else Try.Failure(expected)
+        expected.nonFatalOrRethrow()
     }
 }
 

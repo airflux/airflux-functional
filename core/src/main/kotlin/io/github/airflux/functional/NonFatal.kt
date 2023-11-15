@@ -15,6 +15,9 @@
  */
 package io.github.airflux.functional
 
+public fun <T> Throwable.nonFatalOrRethrow(): Try<T> =
+    if (isFatal()) throw this else Try.Failure(this)
+
 public fun Throwable.isFatal(): Boolean =
     this is VirtualMachineError ||
         this is ThreadDeath ||
