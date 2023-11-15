@@ -125,7 +125,7 @@ public inline infix fun <T, R> Try<T>.map(transform: (T) -> R): Try<R> {
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) Try.wrap { transform(this.result) } else this
+    return flatMap { Try.Success(transform(it)) }
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -157,7 +157,7 @@ public inline infix fun <T> Try<T>.recover(block: (Throwable) -> T): Try<T> {
     contract {
         callsInPlace(block, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) this else Try.wrap { block(exception) }
+    return recoverWith { Try.Success(block(it)) }
 }
 
 @OptIn(ExperimentalContracts::class)
