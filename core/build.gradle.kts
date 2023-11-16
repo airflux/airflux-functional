@@ -16,3 +16,11 @@ dependencies {
     testImplementation(testLibs.bundles.kotest)
     testImplementation(testLibs.pitest.junit5)
 }
+
+tasks {
+    compileTestKotlin.configure {
+        kotlinOptions {
+            freeCompilerArgs += listOf("-Xcontext-receivers")
+        }
+    }
+}
