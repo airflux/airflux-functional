@@ -1,6 +1,10 @@
 public abstract interface class io/github/airflux/functional/BasicRaise {
 }
 
+public final class io/github/airflux/functional/IdentityKt {
+	public static final fun identity (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
 public final class io/github/airflux/functional/NonFatalKt {
 	public static final fun isFatal (Ljava/lang/Throwable;)Z
 	public static final fun nonFatalOrRethrow (Ljava/lang/Throwable;)Lio/github/airflux/functional/Try;

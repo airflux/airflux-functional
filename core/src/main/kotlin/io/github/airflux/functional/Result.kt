@@ -100,13 +100,13 @@ public inline fun <T, E> Result<T, E>.isError(predicate: (E) -> Boolean): Boolea
 }
 
 @OptIn(ExperimentalContracts::class)
-public inline fun <T, R, E> Result<T, E>.fold(ifSuccess: (T) -> R, ifError: (E) -> R): R {
+public inline fun <T, R, E> Result<T, E>.fold(onSuccess: (T) -> R, onError: (E) -> R): R {
     contract {
-        callsInPlace(ifError, InvocationKind.AT_MOST_ONCE)
-        callsInPlace(ifSuccess, InvocationKind.AT_MOST_ONCE)
+        callsInPlace(onError, InvocationKind.AT_MOST_ONCE)
+        callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
     }
 
-    return if (isSuccess()) ifSuccess(value) else ifError(cause)
+    return if (isSuccess()) onSuccess(value) else onError(cause)
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -185,7 +185,7 @@ public inline infix fun <T, E> Result<T, E>.getOrForward(block: (Result.Error<E>
 public fun <T, E> Result<T, E>.getOrNull(): T? {
     contract {
         returns(null) implies (this@getOrNull is Result.Error<E>)
-        returnsNotNull() implies ((this@getOrNull is Result.Success<T>))
+        returnsNotNull() implies (this@getOrNull is Result.Success<T>)
     }
 
     return if (isSuccess()) value else null
@@ -225,7 +225,7 @@ public inline infix fun <T, E> Result<T, E>.forEach(block: (T) -> Unit) {
     return if (isSuccess()) block(value) else Unit
 }
 
-public fun <T> Result<T, T>.merge(): T = if (isSuccess()) this.value else this.cause
+public fun <T> Result<T, T>.merge(): T = fold(onSuccess = ::identity, onError = ::identity)
 
 public fun <T, E> Iterable<Result<T, E>>.sequence(): Result<List<T>, E> {
     val items = buildList {

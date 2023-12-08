@@ -225,7 +225,7 @@ internal class ResultTest : FreeSpec() {
                     val original: Result<String, Error> = ORIGINAL_VALUE.success()
 
                     "then should return a value" {
-                        val result = original.fold(ifError = { ALTERNATIVE_VALUE }, ifSuccess = { it })
+                        val result = original.fold(onError = { ALTERNATIVE_VALUE }, onSuccess = { it })
 
                         result shouldBe ORIGINAL_VALUE
                     }
@@ -235,7 +235,7 @@ internal class ResultTest : FreeSpec() {
                     val original: Result<String, Error> = Error.Empty.error()
 
                     "then should return the null value" {
-                        val result = original.fold(ifError = { ALTERNATIVE_VALUE }, ifSuccess = { it })
+                        val result = original.fold(onError = { ALTERNATIVE_VALUE }, onSuccess = { it })
 
                         result shouldBe ALTERNATIVE_VALUE
                     }
