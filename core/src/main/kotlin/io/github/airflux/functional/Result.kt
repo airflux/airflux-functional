@@ -181,7 +181,15 @@ public inline infix fun <T, E> Result<T, E>.getOrForward(block: (Result.Error<E>
     return if (isSuccess()) value else block(this)
 }
 
-public fun <T, E> Result<T, E>.getOrNull(): T? = if (isSuccess()) value else null
+@OptIn(ExperimentalContracts::class)
+public fun <T, E> Result<T, E>.getOrNull(): T? {
+    contract {
+        returns(null) implies (this@getOrNull is Result.Error<E>)
+        returnsNotNull() implies ((this@getOrNull is Result.Success<T>))
+    }
+
+    return if (isSuccess()) value else null
+}
 
 public infix fun <T, E> Result<T, E>.getOrElse(default: T): T = if (isSuccess()) value else default
 
