@@ -40,37 +40,27 @@ internal class ResultTest : FreeSpec() {
 
             "the `asNull` property should return the `Result#Success` type with the `null` value" {
                 val result = Result.asNull
-
-                result.shouldBeSuccess()
-                result.value shouldBe null
+                result shouldBeSuccess null
             }
 
             "the `asTrue` property should return the `Result#Success` type with the `true` value" {
                 val result = Result.asTrue
-
-                result.shouldBeSuccess()
-                result.value shouldBe true
+                result shouldBeSuccess true
             }
 
             "the `asFalse` property should return the `Result#Success` type with the `false` value" {
                 val result = Result.asFalse
-
-                result.shouldBeSuccess()
-                result.value shouldBe false
+                result shouldBeSuccess false
             }
 
             "the `asUnit` property should return the `Result#Success` type with the `Unit` value" {
                 val result = Result.asUnit
-
-                result.shouldBeSuccess()
-                result.value shouldBe Unit
+                result shouldBeSuccess Unit
             }
 
             "the `asEmptyList` property should return the `Result#Success` type with the `empty list` value" {
                 val result = Result.asEmptyList
-
-                result.shouldBeSuccess()
-                result.value shouldBe emptyList()
+                result shouldBeSuccess emptyList()
             }
         }
 
@@ -103,9 +93,8 @@ internal class ResultTest : FreeSpec() {
                     val original: Result<String, Error> = ORIGINAL_VALUE.success()
 
                     "then should return the true value" {
-                        val result: Boolean = original.isSuccess()
-
-                        result shouldBe true
+                        val isSuccess: Boolean = original.isSuccess()
+                        isSuccess shouldBe true
                     }
                 }
 
@@ -113,9 +102,8 @@ internal class ResultTest : FreeSpec() {
                     val original: Result<String, Error> = Error.Empty.error()
 
                     "then should return the false value" {
-                        val result: Boolean = original.isSuccess()
-
-                        result shouldBe false
+                        val isSuccess: Boolean = original.isSuccess()
+                        isSuccess shouldBe false
                     }
                 }
             }
@@ -129,9 +117,8 @@ internal class ResultTest : FreeSpec() {
                         val predicate: (String) -> Boolean = { it == ORIGINAL_VALUE }
 
                         "then should return the true value" {
-                            val result: Boolean = original.isSuccess(predicate)
-
-                            result shouldBe true
+                            val isSuccess: Boolean = original.isSuccess(predicate)
+                            isSuccess shouldBe true
                         }
                     }
 
@@ -139,9 +126,8 @@ internal class ResultTest : FreeSpec() {
                         val predicate: (String) -> Boolean = { it != ORIGINAL_VALUE }
 
                         "then should return the true value" {
-                            val result: Boolean = original.isSuccess(predicate)
-
-                            result shouldBe false
+                            val isSuccess: Boolean = original.isSuccess(predicate)
+                            isSuccess shouldBe false
                         }
                     }
                 }
@@ -151,9 +137,8 @@ internal class ResultTest : FreeSpec() {
                     val predicate: (String) -> Boolean = { throw IllegalStateException() }
 
                     "then the predicate is not invoked and should return the false value" {
-                        val result: Boolean = original.isSuccess(predicate)
-
-                        result shouldBe false
+                        val isSuccess: Boolean = original.isSuccess(predicate)
+                        isSuccess shouldBe false
                     }
                 }
             }
@@ -164,9 +149,8 @@ internal class ResultTest : FreeSpec() {
                     val original: Result<String, Error> = ORIGINAL_VALUE.success()
 
                     "then should return the false value" {
-                        val result: Boolean = original.isError()
-
-                        result shouldBe false
+                        val isError: Boolean = original.isError()
+                        isError shouldBe false
                     }
                 }
 
@@ -174,9 +158,8 @@ internal class ResultTest : FreeSpec() {
                     val original: Result<String, Error> = Error.Empty.error()
 
                     "then should return the true value" {
-                        val result: Boolean = original.isError()
-
-                        result shouldBe true
+                        val isError: Boolean = original.isError()
+                        isError shouldBe true
                     }
                 }
             }
@@ -188,9 +171,8 @@ internal class ResultTest : FreeSpec() {
                     val predicate: (Error) -> Boolean = { throw IllegalStateException() }
 
                     "then the predicate is not invoked and should return the false value" {
-                        val result: Boolean = original.isError(predicate)
-
-                        result shouldBe false
+                        val isError: Boolean = original.isError(predicate)
+                        isError shouldBe false
                     }
                 }
 
@@ -201,9 +183,8 @@ internal class ResultTest : FreeSpec() {
                         val predicate: (Error) -> Boolean = { it == Error.Empty }
 
                         "then should return the true value" {
-                            val result: Boolean = original.isError(predicate)
-
-                            result shouldBe true
+                            val isError: Boolean = original.isError(predicate)
+                            isError shouldBe true
                         }
                     }
 
@@ -211,9 +192,8 @@ internal class ResultTest : FreeSpec() {
                         val predicate: (Error) -> Boolean = { it != Error.Empty }
 
                         "then should return the true value" {
-                            val result: Boolean = original.isError(predicate)
-
-                            result shouldBe false
+                            val isError: Boolean = original.isError(predicate)
+                            isError shouldBe false
                         }
                     }
                 }
@@ -226,7 +206,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val result = original.fold(onError = { ALTERNATIVE_VALUE }, onSuccess = { it })
-
                         result shouldBe ORIGINAL_VALUE
                     }
                 }
@@ -236,7 +215,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the null value" {
                         val result = original.fold(onError = { ALTERNATIVE_VALUE }, onSuccess = { it })
-
                         result shouldBe ALTERNATIVE_VALUE
                     }
                 }
@@ -249,9 +227,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a result of applying the [transform] function to the value" {
                         val result = original.map { it.toInt() }
-
-                        result.shouldBeSuccess()
-                        result.value shouldBe ORIGINAL_VALUE.toInt()
+                        result shouldBeSuccess ORIGINAL_VALUE.toInt()
                     }
                 }
 
@@ -260,7 +236,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return an original do not apply the [transform] function to a value" {
                         val result = original.map { it.toInt() }
-
                         result shouldBe original
                     }
                 }
@@ -273,9 +248,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a result of applying the [transform] function to the value" {
                         val result = original.flatMap { result -> result.toInt().success() }
-
-                        result.shouldBeSuccess()
-                        result.value shouldBe ORIGINAL_VALUE.toInt()
+                        result shouldBeSuccess ORIGINAL_VALUE.toInt()
                     }
                 }
 
@@ -299,9 +272,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a result of invoke the [block]" {
                         val result = original.andThen { result -> result.toInt().success() }
-
-                        result.shouldBeSuccess()
-                        result.value shouldBe ORIGINAL_VALUE.toInt()
+                        result shouldBeSuccess ORIGINAL_VALUE.toInt()
                     }
                 }
 
@@ -325,9 +296,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return an original do not apply the [transform] function to an error" {
                         val result = original.mapError { Error.Blank }
-
-                        result.shouldBeSuccess()
-                        result.value shouldBe ORIGINAL_VALUE
+                        result shouldBeSuccess ORIGINAL_VALUE
                     }
                 }
 
@@ -336,9 +305,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a result of applying the [transform] function to an error" {
                         val result = original.mapError { Error.Blank }
-
-                        result.shouldBeError()
-                        result.cause shouldBe Error.Blank
+                        result shouldBeError Error.Blank
                     }
                 }
             }
@@ -396,7 +363,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val result = original.getOrForward { throw IllegalStateException() }
-
                         result shouldBe ORIGINAL_VALUE
                     }
                 }
@@ -419,7 +385,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return an original value" {
                         val result = original.recover { ALTERNATIVE_VALUE }
-
                         result shouldBeSameInstanceAs original
                     }
                 }
@@ -429,9 +394,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the result of invoking the recovery function" {
                         val result = original.recover { ALTERNATIVE_VALUE }
-
-                        result.shouldBeSuccess()
-                        result.value shouldBe ALTERNATIVE_VALUE
+                        result shouldBeSuccess ALTERNATIVE_VALUE
                     }
                 }
             }
@@ -443,7 +406,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return an original value" {
                         val result = original.recoverWith { ALTERNATIVE_VALUE.success() }
-
                         result shouldBeSameInstanceAs original
                     }
                 }
@@ -453,9 +415,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the result of invoking the recovery function" {
                         val result = original.recoverWith { ALTERNATIVE_VALUE.success() }
-
-                        result.shouldBeSuccess()
-                        result.value shouldBe ALTERNATIVE_VALUE
+                        result shouldBeSuccess ALTERNATIVE_VALUE
                     }
                 }
             }
@@ -467,7 +427,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val result = original.getOrNull()
-
                         result shouldBe ORIGINAL_VALUE
                     }
                 }
@@ -477,7 +436,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the null value" {
                         val result = original.getOrNull()
-
                         result.shouldBeNull()
                     }
                 }
@@ -490,7 +448,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val result = original.getOrElse(ALTERNATIVE_VALUE)
-
                         result shouldBe ORIGINAL_VALUE
                     }
                 }
@@ -500,7 +457,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the defaultValue value" {
                         val result = original.getOrElse(ALTERNATIVE_VALUE)
-
                         result shouldBe ALTERNATIVE_VALUE
                     }
                 }
@@ -513,7 +469,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val result = original.getOrElse { ALTERNATIVE_VALUE }
-
                         result shouldBe ORIGINAL_VALUE
                     }
                 }
@@ -523,7 +478,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value from a handler" {
                         val result = original.getOrElse { ALTERNATIVE_VALUE }
-
                         result shouldBe ALTERNATIVE_VALUE
                     }
                 }
@@ -536,9 +490,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val elseResult: Result<String, Error> = ALTERNATIVE_VALUE.success()
-
                         val result = original.orElse { elseResult }
-
                         result shouldBe original
                     }
                 }
@@ -548,9 +500,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the defaultValue value" {
                         val elseResult: Result<String, Error> = ALTERNATIVE_VALUE.success()
-
                         val result = original.orElse { elseResult }
-
                         result shouldBe elseResult
                     }
                 }
@@ -563,7 +513,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val result = original.orThrow { throw IllegalStateException() }
-
                         result shouldBe ORIGINAL_VALUE
                     }
                 }
@@ -609,7 +558,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a value" {
                         val result = original.merge()
-
                         result shouldBe ORIGINAL_VALUE
                     }
                 }
@@ -619,7 +567,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the error value" {
                         val result = original.merge()
-
                         result shouldBe ALTERNATIVE_VALUE
                     }
                 }
@@ -632,7 +579,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the value of the asEmptyList property" {
                         val result = original.sequence()
-
                         result.shouldBeSuccess()
                         result shouldBeSameInstanceAs Result.asEmptyList
                     }
@@ -644,7 +590,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a list with all values" {
                         val result = original.sequence()
-
                         result.shouldBeSuccess()
                         result.value shouldContainExactly listOf(ORIGINAL_VALUE, ALTERNATIVE_VALUE)
                     }
@@ -655,7 +600,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the error value" {
                         val result = original.sequence()
-
                         result.shouldBeError()
                         result.cause shouldBe Error.Empty
                     }
@@ -670,7 +614,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the value of the asEmptyList property" {
                         val result: Result<List<Int>, Error> = original.traverse(transform)
-
                         result.shouldBeSuccess()
                         result shouldBeSameInstanceAs Result.asEmptyList
                     }
@@ -682,7 +625,6 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return a list with all transformed values" {
                         val result: Result<List<Int>, Error> = original.traverse(transform)
-
                         result.shouldBeSuccess()
                         result.value shouldContainExactly listOf(ORIGINAL_VALUE.toInt(), ALTERNATIVE_VALUE.toInt())
                     }
@@ -697,9 +639,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the error value" {
                         val result: Result<List<Int>, Error> = original.traverse(transform)
-
-                        result.shouldBeError()
-                        result.cause shouldBe Error.Empty
+                        result shouldBeError Error.Empty
                     }
                 }
             }
@@ -707,14 +647,11 @@ internal class ResultTest : FreeSpec() {
 
         "The `success` function should return the `Result#Success` type with the passed value" {
             val result: Result<String, Error.Empty> = ORIGINAL_VALUE.success()
-
-            result.shouldBeSuccess()
-            result.value shouldBe ORIGINAL_VALUE
+            result shouldBeSuccess ORIGINAL_VALUE
         }
 
         "The `error` function should return the `Result#Error` type with the passed value" {
             val error: Result<String, Error.Empty> = Error.Empty.error()
-
             error.shouldBeError()
             error.cause shouldBe Error.Empty
         }

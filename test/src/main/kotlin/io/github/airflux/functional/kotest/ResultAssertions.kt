@@ -17,30 +17,91 @@
 package io.github.airflux.functional.kotest
 
 import io.github.airflux.functional.Result
-import io.github.airflux.functional.isError
-import io.github.airflux.functional.isSuccess
-import io.kotest.assertions.failure
+import io.kotest.matchers.ComparableMatcherResult
+import io.kotest.matchers.Matcher
+import io.kotest.matchers.MatcherResult
+import io.kotest.matchers.should
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+import kotlin.reflect.KClass
+
+public fun beSuccess(): Matcher<Result<*, *>> =
+    object : Matcher<Result<*, *>> {
+        override fun test(value: Result<*, *>): MatcherResult =
+            typeMatch(expected = Result.Success::class, actual = value)
+    }
+
+public fun <T> beSuccess(expected: T): Matcher<Result<T, *>> =
+    object : Matcher<Result<T, *>> {
+        override fun test(value: Result<T, *>): MatcherResult =
+            valueMatch(expected = Result.Success(expected), actual = value)
+    }
 
 @OptIn(ExperimentalContracts::class)
-public fun <T, E> Result<T, E>.shouldBeSuccess(): Result.Success<T> {
+public fun <T> Result<T, *>.shouldBeSuccess(): Result.Success<T> {
     contract {
         returns() implies (this@shouldBeSuccess is Result.Success<T>)
     }
-
-    val message =
-        "The result type is not as expected. Expected type: `Result.Success`, actual type: `Result.Error` ($this)."
-    return if (isSuccess()) this else throw failure(message = message)
+    this should beSuccess()
+    return this as Result.Success
 }
 
+public infix fun <T> Result<T, *>.shouldBeSuccess(value: T) {
+    this should beSuccess(value)
+}
+
+public inline infix fun <T> Result<T, *>.shouldBeSuccess(block: (T) -> Unit) {
+    block(this.shouldBeSuccess().value)
+}
+
+public fun beFailure(): Matcher<Result<*, *>> =
+    object : Matcher<Result<*, *>> {
+        override fun test(value: Result<*, *>): MatcherResult =
+            typeMatch(expected = Result.Error::class, actual = value)
+    }
+
+public fun <E> beFailure(expected: E): Matcher<Result<*, E>> =
+    object : Matcher<Result<*, E>> {
+        override fun test(value: Result<*, E>): MatcherResult =
+            valueMatch(expected = Result.Error(expected), actual = value)
+    }
+
 @OptIn(ExperimentalContracts::class)
-public fun <T, E> Result<T, E>.shouldBeError(): Result.Error<E> {
+public fun <E> Result<*, E>.shouldBeError(): Result.Error<E> {
     contract {
         returns() implies (this@shouldBeError is Result.Error<E>)
     }
-
-    val message =
-        "The result type is not as expected. Expected type: `Result.Error`,  actual type: `Result.Success` ($this)."
-    return if (isError()) this else throw failure(message = message)
+    this should beFailure()
+    return this as Result.Error<E>
 }
+
+public infix fun <E> Result<*, E>.shouldBeError(expected: E) {
+    this should beFailure(expected)
+}
+
+public inline infix fun <E> Result<*, E>.shouldBeError(block: (E) -> Unit) {
+    block(this.shouldBeError().cause)
+}
+
+private fun <T, E> valueMatch(expected: Result<T, E>, actual: Result<T, E>): MatcherResult =
+    comparableMatcherResult(
+        passed = expected == actual,
+        actual = actual.toString(),
+        expected = expected.toString()
+    )
+
+private fun <T, E, K : Result<T, E>> typeMatch(expected: KClass<K>, actual: Result<T, E>): MatcherResult =
+    comparableMatcherResult(
+        passed = expected.isInstance(actual),
+        actual = actual::class.qualifiedName!!,
+        expected = expected.qualifiedName!!
+    )
+
+private fun comparableMatcherResult(passed: Boolean, actual: String, expected: String) =
+    ComparableMatcherResult(
+        passed = passed,
+        failureMessageFn = { "" },
+        negatedFailureMessageFn = { "not " },
+        actual = actual,
+        expected = expected
+    )
