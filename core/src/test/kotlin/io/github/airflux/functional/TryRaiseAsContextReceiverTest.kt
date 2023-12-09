@@ -16,7 +16,7 @@
 
 package io.github.airflux.functional
 
-import io.github.airflux.functional.kotest.shouldBeError
+import io.github.airflux.functional.kotest.shouldBeFailure
 import io.github.airflux.functional.kotest.shouldBeSuccess
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -40,7 +40,7 @@ internal class TryRaiseAsContextReceiverTest : FreeSpec() {
                     find(UNKNOWN_USER_ID)
                 }
 
-                result.shouldBeError()
+                result.shouldBeFailure()
                 result.exception shouldBe IllegalStateException(STORAGE_ERROR)
             }
         }

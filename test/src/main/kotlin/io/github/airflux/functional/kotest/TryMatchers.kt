@@ -52,9 +52,9 @@ public inline infix fun <reified T> Try<T>.shouldBeSuccess(block: (T) -> Unit) {
 }
 
 @OptIn(ExperimentalContracts::class)
-public fun Try<*>.shouldBeError(): Try.Failure {
+public fun Try<*>.shouldBeFailure(): Try.Failure {
     contract {
-        returns() implies (this@shouldBeError is Try.Failure)
+        returns() implies (this@shouldBeFailure is Try.Failure)
     }
 
     if (this.isSuccess()) {
@@ -69,10 +69,10 @@ public fun Try<*>.shouldBeError(): Try.Failure {
     return this as Try.Failure
 }
 
-public infix fun Try<*>.shouldBeError(expected: Throwable) {
-    this.shouldBeError().exception shouldBe expected
+public infix fun Try<*>.shouldBeFailure(expected: Throwable) {
+    this.shouldBeFailure().exception shouldBe expected
 }
 
-public infix fun Try<*>.shouldBeError(block: (Throwable) -> Unit) {
-    block(this.shouldBeError().exception)
+public infix fun Try<*>.shouldBeFailure(block: (Throwable) -> Unit) {
+    block(this.shouldBeFailure().exception)
 }
