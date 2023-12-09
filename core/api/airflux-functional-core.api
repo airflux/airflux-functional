@@ -109,8 +109,6 @@ public final class io/github/airflux/functional/Try$Companion {
 	public final fun getAsTrue ()Lio/github/airflux/functional/Try;
 	public final fun getAsUnit ()Lio/github/airflux/functional/Try;
 	public final fun of (Z)Lio/github/airflux/functional/Try;
-	public final fun wrap (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
-	public final fun wrapWith (Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Try;
 }
 
 public final class io/github/airflux/functional/Try$Failure : io/github/airflux/functional/Try {
@@ -158,8 +156,8 @@ public final class io/github/airflux/functional/TryKt {
 	public static final fun getOrElse (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static final fun getOrForward (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static final fun getOrNull (Lio/github/airflux/functional/Try;)Ljava/lang/Object;
-	public static final fun isError (Lio/github/airflux/functional/Try;)Z
-	public static final fun isError (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Z
+	public static final fun isFailure (Lio/github/airflux/functional/Try;)Z
+	public static final fun isFailure (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Z
 	public static final fun isSuccess (Lio/github/airflux/functional/Try;)Z
 	public static final fun isSuccess (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Z
 	public static final fun map (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Try;

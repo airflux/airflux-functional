@@ -48,28 +48,6 @@ public sealed class Try<out T> {
         public val asEmptyList: Try<List<Nothing>> = Success(emptyList())
 
         public fun of(value: Boolean): Try<Boolean> = if (value) asTrue else asFalse
-
-        @PublishedApi
-        @OptIn(ExperimentalContracts::class)
-        internal inline fun <T> wrap(block: () -> T): Try<T> {
-            contract {
-                callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-            }
-            return wrapWith { Success(block()) }
-        }
-
-        @PublishedApi
-        @OptIn(ExperimentalContracts::class)
-        internal inline fun <T> wrapWith(block: () -> Try<T>): Try<T> {
-            contract {
-                callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-            }
-            return try {
-                block()
-            } catch (expected: Throwable) {
-                expected.nonFatalOrRethrow()
-            }
-        }
     }
 }
 
@@ -93,19 +71,19 @@ public fun <T> Try<T>.isSuccess(predicate: (T) -> Boolean): Boolean {
 }
 
 @OptIn(ExperimentalContracts::class)
-public fun <T> Try<T>.isError(): Boolean {
+public fun <T> Try<T>.isFailure(): Boolean {
     contract {
-        returns(false) implies (this@isError is Try.Success<T>)
-        returns(true) implies (this@isError is Try.Failure)
+        returns(false) implies (this@isFailure is Try.Success<T>)
+        returns(true) implies (this@isFailure is Try.Failure)
     }
     return this is Try.Failure
 }
 
 @OptIn(ExperimentalContracts::class)
-public fun <T> Try<T>.isError(predicate: (Throwable) -> Boolean): Boolean {
+public fun <T> Try<T>.isFailure(predicate: (Throwable) -> Boolean): Boolean {
     contract {
-        returns(false) implies (this@isError is Try.Success<T>)
-        returns(true) implies (this@isError is Try.Failure)
+        returns(false) implies (this@isFailure is Try.Success<T>)
+        returns(true) implies (this@isFailure is Try.Failure)
         callsInPlace(predicate, InvocationKind.AT_MOST_ONCE)
     }
     return this is Try.Failure && predicate(exception)
@@ -133,7 +111,7 @@ public inline infix fun <T, R> Try<T>.flatMap(transform: (T) -> Try<R>): Try<R> 
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) Try.wrapWith { transform(result) } else this
+    return if (isSuccess()) io.github.airflux.functional.TryWith { transform(result) } else this
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -149,7 +127,7 @@ public inline fun <T> Try<T>.onFailure(block: (Throwable) -> Unit): Try<T> {
     contract {
         callsInPlace(block, InvocationKind.AT_MOST_ONCE)
     }
-    return also { if (it.isError()) block(it.exception) }
+    return also { if (it.isFailure()) block(it.exception) }
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -165,7 +143,7 @@ public inline infix fun <T> Try<T>.recoverWith(block: (Throwable) -> Try<T>): Tr
     contract {
         callsInPlace(block, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) this else Try.wrapWith { block(exception) }
+    return if (isSuccess()) this else TryWith { block(exception) }
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -193,7 +171,7 @@ public inline infix fun <T> Try<T>.orElse(default: () -> Try<T>): Try<T> {
     contract {
         callsInPlace(default, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) this else Try.wrapWith { default() }
+    return if (isSuccess()) this else TryWith { default() }
 }
 
 public fun <T> Try<T>.orThrow(): T = if (isSuccess()) result else throw exception

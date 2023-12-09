@@ -17,7 +17,7 @@
 package io.github.airflux.functional.kotest
 
 import io.github.airflux.functional.Try
-import io.github.airflux.functional.isError
+import io.github.airflux.functional.isFailure
 import io.github.airflux.functional.isSuccess
 import io.kotest.assertions.collectOrThrow
 import io.kotest.assertions.errorCollector
@@ -31,7 +31,7 @@ public inline fun <reified T> Try<T>.shouldBeSuccess(): Try.Success<T> {
         returns() implies (this@shouldBeSuccess is Try.Success<T>)
     }
 
-    if (this.isError()) {
+    if (this.isFailure()) {
         errorCollector.collectOrThrow(
             failure(
                 expected = Try.Success::class.qualifiedName!!,
