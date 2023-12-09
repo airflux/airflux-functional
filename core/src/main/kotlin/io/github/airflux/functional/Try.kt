@@ -111,7 +111,7 @@ public inline infix fun <T, R> Try<T>.flatMap(transform: (T) -> Try<R>): Try<R> 
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
     }
-    return if (isSuccess()) io.github.airflux.functional.TryWith { transform(result) } else this
+    return if (isSuccess()) TryWith { transform(result) } else this
 }
 
 @OptIn(ExperimentalContracts::class)
