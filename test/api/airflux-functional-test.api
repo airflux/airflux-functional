@@ -1,14 +1,5 @@
-public final class io/github/airflux/functional/kotest/ResultAssertionsKt {
-	public static final fun beFailure ()Lio/kotest/matchers/Matcher;
-	public static final fun beFailure (Ljava/lang/Object;)Lio/kotest/matchers/Matcher;
-	public static final fun beSuccess ()Lio/kotest/matchers/Matcher;
-	public static final fun beSuccess (Ljava/lang/Object;)Lio/kotest/matchers/Matcher;
-	public static final fun shouldBeError (Lio/github/airflux/functional/Result;)Lio/github/airflux/functional/Result$Error;
-	public static final fun shouldBeError (Lio/github/airflux/functional/Result;Ljava/lang/Object;)V
-	public static final fun shouldBeError (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)V
-	public static final fun shouldBeSuccess (Lio/github/airflux/functional/Result;)Lio/github/airflux/functional/Result$Success;
-	public static final fun shouldBeSuccess (Lio/github/airflux/functional/Result;Ljava/lang/Object;)V
-	public static final fun shouldBeSuccess (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)V
+public final class io/github/airflux/functional/kotest/FailureKt {
+	public static final fun failure (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Throwable;
 }
 
 public final class io/github/airflux/functional/kotest/TryAssertionsKt {

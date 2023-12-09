@@ -39,27 +39,27 @@ internal class ResultTest : FreeSpec() {
         "The `Result` type properties" - {
 
             "the `asNull` property should return the `Result#Success` type with the `null` value" {
-                val result = Result.asNull
+                val result: Result<String?, String> = Result.asNull
                 result shouldBeSuccess null
             }
 
             "the `asTrue` property should return the `Result#Success` type with the `true` value" {
-                val result = Result.asTrue
+                val result: Result<Boolean, String> = Result.asTrue
                 result shouldBeSuccess true
             }
 
             "the `asFalse` property should return the `Result#Success` type with the `false` value" {
-                val result = Result.asFalse
+                val result: Result<Boolean, String> = Result.asFalse
                 result shouldBeSuccess false
             }
 
             "the `asUnit` property should return the `Result#Success` type with the `Unit` value" {
-                val result = Result.asUnit
+                val result: Result<Unit, String> = Result.asUnit
                 result shouldBeSuccess Unit
             }
 
             "the `asEmptyList` property should return the `Result#Success` type with the `empty list` value" {
-                val result = Result.asEmptyList
+                val result: Result<List<String>, String> = Result.asEmptyList
                 result shouldBeSuccess emptyList()
             }
         }
@@ -72,7 +72,8 @@ internal class ResultTest : FreeSpec() {
                     val param = true
 
                     "then should return the `Result#Success` type with the `true` value" {
-                        val result = Result.of(param)
+                        val result: Result<Boolean, String> = Result.of(param)
+                        result.shouldBeSuccess()
                         result.value shouldBe true
                     }
                 }
@@ -81,7 +82,8 @@ internal class ResultTest : FreeSpec() {
                     val param = false
 
                     "then should return the `Result#Success` type with the `true` value" {
-                        val result = Result.of(param)
+                        val result: Result<Boolean, String> = Result.of(param)
+                        result.shouldBeSuccess()
                         result.value shouldBe false
                     }
                 }

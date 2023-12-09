@@ -1,58 +1,6 @@
 public abstract interface class io/github/airflux/functional/BasicRaise {
 }
 
-public abstract interface class io/github/airflux/functional/Either {
-	public static final field Companion Lio/github/airflux/functional/Either$Companion;
-}
-
-public final class io/github/airflux/functional/Either$Companion {
-	public final fun getAsEmptyList ()Lio/github/airflux/functional/Either$Right;
-	public final fun getAsFalse ()Lio/github/airflux/functional/Either$Right;
-	public final fun getAsNull ()Lio/github/airflux/functional/Either$Right;
-	public final fun getAsTrue ()Lio/github/airflux/functional/Either$Right;
-	public final fun getAsUnit ()Lio/github/airflux/functional/Either$Right;
-	public final fun of (Z)Lio/github/airflux/functional/Either$Right;
-}
-
-public final class io/github/airflux/functional/Either$Left : io/github/airflux/functional/Either {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun getGet ()Ljava/lang/Object;
-}
-
-public final class io/github/airflux/functional/Either$Right : io/github/airflux/functional/Either {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun getGet ()Ljava/lang/Object;
-}
-
-public final class io/github/airflux/functional/EitherKt {
-	public static final fun andThen (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun flatMap (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun flatMapLeft (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun fold (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public static final fun forEach (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)V
-	public static final fun getOrElse (Lio/github/airflux/functional/Either;Ljava/lang/Object;)Ljava/lang/Object;
-	public static final fun getOrElse (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public static final fun getOrForward (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public static final fun getOrNull (Lio/github/airflux/functional/Either;)Ljava/lang/Object;
-	public static final fun isLeft (Lio/github/airflux/functional/Either;)Z
-	public static final fun isLeft (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Z
-	public static final fun isRight (Lio/github/airflux/functional/Either;)Z
-	public static final fun isRight (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Z
-	public static final fun left (Ljava/lang/Object;)Lio/github/airflux/functional/Either;
-	public static final fun map (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun mapLeft (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun merge (Lio/github/airflux/functional/Either;)Ljava/lang/Object;
-	public static final fun onLeft (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun onRight (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun orElse (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Either;
-	public static final fun orThrow (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public static final fun recover (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun recoverWith (Lio/github/airflux/functional/Either;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-	public static final fun right (Ljava/lang/Object;)Lio/github/airflux/functional/Either;
-	public static final fun sequence (Ljava/lang/Iterable;)Lio/github/airflux/functional/Either;
-	public static final fun traverse (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Either;
-}
-
 public final class io/github/airflux/functional/IdentityKt {
 	public static final fun identity (Ljava/lang/Object;)Ljava/lang/Object;
 }
