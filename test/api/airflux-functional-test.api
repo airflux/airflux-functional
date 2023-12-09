@@ -3,8 +3,8 @@ public final class io/github/airflux/functional/kotest/FailureKt {
 }
 
 public final class io/github/airflux/functional/kotest/TryMatchersKt {
-	public static final fun shouldBeError (Lio/github/airflux/functional/Try;)Lio/github/airflux/functional/Try$Failure;
-	public static final fun shouldBeError (Lio/github/airflux/functional/Try;Ljava/lang/Throwable;)V
-	public static final fun shouldBeError (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)V
+	public static final fun shouldBeFailure (Lio/github/airflux/functional/Try;)Lio/github/airflux/functional/Try$Failure;
+	public static final fun shouldBeFailure (Lio/github/airflux/functional/Try;Ljava/lang/Throwable;)V
+	public static final fun shouldBeFailure (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)V
 }
 
