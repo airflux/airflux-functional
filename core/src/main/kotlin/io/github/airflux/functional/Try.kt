@@ -24,9 +24,9 @@ import kotlin.experimental.ExperimentalTypeInference
 
 public sealed class Try<out T> {
 
-    public class Success<out T>(public val result: T) : Try<T>()
+    public data class Success<out T>(public val result: T) : Try<T>()
 
-    public class Failure(public val exception: Throwable) : Try<Nothing>()
+    public data class Failure(public val exception: Throwable) : Try<Nothing>()
 
     public interface Raise : BasicRaise {
         public fun <T> Try<T>.bind(): T
