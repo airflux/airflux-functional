@@ -2,8 +2,9 @@ public final class io/github/airflux/functional/kotest/FailureKt {
 	public static final fun failure (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Throwable;
 }
 
-public final class io/github/airflux/functional/kotest/TryAssertionsKt {
+public final class io/github/airflux/functional/kotest/TryMatchersKt {
 	public static final fun shouldBeError (Lio/github/airflux/functional/Try;)Lio/github/airflux/functional/Try$Failure;
-	public static final fun shouldBeSuccess (Lio/github/airflux/functional/Try;)Lio/github/airflux/functional/Try$Success;
+	public static final fun shouldBeError (Lio/github/airflux/functional/Try;Ljava/lang/Throwable;)V
+	public static final fun shouldBeError (Lio/github/airflux/functional/Try;Lkotlin/jvm/functions/Function1;)V
 }
 
