@@ -73,8 +73,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the `Result#Success` type with the `true` value" {
                         val result: Result<Boolean, String> = Result.of(param)
-                        result.shouldBeSuccess()
-                        result.value shouldBe true
+                        result shouldBeSuccess true
                     }
                 }
 
@@ -83,8 +82,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the `Result#Success` type with the `true` value" {
                         val result: Result<Boolean, String> = Result.of(param)
-                        result.shouldBeSuccess()
-                        result.value shouldBe false
+                        result shouldBeSuccess false
                     }
                 }
             }
@@ -602,8 +600,7 @@ internal class ResultTest : FreeSpec() {
 
                     "then should return the error value" {
                         val result = original.sequence()
-                        result.shouldBeError()
-                        result.cause shouldBe Error.Empty
+                        result shouldBeError Error.Empty
                     }
                 }
             }
@@ -654,8 +651,7 @@ internal class ResultTest : FreeSpec() {
 
         "The `error` function should return the `Result#Error` type with the passed value" {
             val error: Result<String, Error.Empty> = Error.Empty.error()
-            error.shouldBeError()
-            error.cause shouldBe Error.Empty
+            error shouldBeError Error.Empty
         }
     }
 

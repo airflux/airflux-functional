@@ -19,7 +19,6 @@ package io.github.airflux.functional
 import io.github.airflux.functional.kotest.shouldBeError
 import io.github.airflux.functional.kotest.shouldBeSuccess
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.matchers.shouldBe
 
 internal class ResultRaiseAsContextReceiverTest : FreeSpec() {
 
@@ -31,8 +30,7 @@ internal class ResultRaiseAsContextReceiverTest : FreeSpec() {
                     getUser(USER_ID)
                 }
 
-                result.shouldBeSuccess()
-                result.value shouldBe User(USER_ID, USER_NAME)
+                result shouldBeSuccess User(USER_ID, USER_NAME)
             }
 
             "when the `raise` function was called" {
@@ -40,8 +38,7 @@ internal class ResultRaiseAsContextReceiverTest : FreeSpec() {
                     getUser(UNKNOWN_USER_ID)
                 }
 
-                result.shouldBeError()
-                result.cause shouldBe Errors.UserNotFound
+                result shouldBeError Errors.UserNotFound
             }
         }
     }

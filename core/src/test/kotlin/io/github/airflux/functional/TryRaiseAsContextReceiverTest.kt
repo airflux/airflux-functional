@@ -19,7 +19,6 @@ package io.github.airflux.functional
 import io.github.airflux.functional.kotest.shouldBeFailure
 import io.github.airflux.functional.kotest.shouldBeSuccess
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.matchers.shouldBe
 
 internal class TryRaiseAsContextReceiverTest : FreeSpec() {
 
@@ -31,8 +30,7 @@ internal class TryRaiseAsContextReceiverTest : FreeSpec() {
                     find(USER_ID)
                 }
 
-                result.shouldBeSuccess()
-                result.result shouldBe User(USER_ID, USER_NAME)
+                result shouldBeSuccess User(USER_ID, USER_NAME)
             }
 
             "when the `raise` function was called" {
@@ -40,8 +38,7 @@ internal class TryRaiseAsContextReceiverTest : FreeSpec() {
                     find(UNKNOWN_USER_ID)
                 }
 
-                result.shouldBeFailure()
-                result.exception shouldBe IllegalStateException(STORAGE_ERROR)
+                result shouldBeFailure IllegalStateException(STORAGE_ERROR)
             }
         }
     }

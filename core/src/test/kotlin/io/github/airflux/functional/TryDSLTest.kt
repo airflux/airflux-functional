@@ -18,7 +18,6 @@ package io.github.airflux.functional
 import io.github.airflux.functional.kotest.shouldBeFailure
 import io.github.airflux.functional.kotest.shouldBeSuccess
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 internal class TryDSLTest : FreeSpec() {
@@ -43,8 +42,7 @@ internal class TryDSLTest : FreeSpec() {
                                     a + b
                                 }
 
-                                result.shouldBeSuccess()
-                                result.result shouldBe FIRST_VALUE + SECOND_VALUE
+                                result shouldBeSuccess FIRST_VALUE + SECOND_VALUE
                             }
                         }
 
@@ -91,8 +89,7 @@ internal class TryDSLTest : FreeSpec() {
                                 a + b + c
                             }
 
-                            result.shouldBeFailure()
-                            result.exception shouldBe FirstException
+                            result shouldBeFailure FirstException
                         }
                     }
                 }
@@ -115,8 +112,7 @@ internal class TryDSLTest : FreeSpec() {
                                 a + b + d
                             }
 
-                            result.shouldBeSuccess()
-                            result.result shouldBe 6
+                            result shouldBeSuccess 6
                         }
                     }
 
@@ -136,8 +132,7 @@ internal class TryDSLTest : FreeSpec() {
                                 a + b + d
                             }
 
-                            result.shouldBeFailure()
-                            result.exception shouldBe FirstException
+                            result shouldBeFailure FirstException
                         }
                     }
 
@@ -157,8 +152,7 @@ internal class TryDSLTest : FreeSpec() {
                                 a + b + d
                             }
 
-                            result.shouldBeFailure()
-                            result.exception shouldBe FirstException
+                            result shouldBeFailure FirstException
                         }
                     }
                 }
@@ -172,8 +166,7 @@ internal class TryDSLTest : FreeSpec() {
                             SECOND_VALUE
                         }
 
-                        result.shouldBeSuccess()
-                        result.result shouldBe SECOND_VALUE
+                        result shouldBeSuccess SECOND_VALUE
                     }
                 }
 
@@ -186,8 +179,7 @@ internal class TryDSLTest : FreeSpec() {
                             SECOND_VALUE
                         }
 
-                        result.shouldBeFailure()
-                        result.exception shouldBe FirstException
+                        result shouldBeFailure FirstException
                     }
                 }
             }

@@ -18,7 +18,6 @@ package io.github.airflux.functional
 import io.github.airflux.functional.kotest.shouldBeError
 import io.github.airflux.functional.kotest.shouldBeSuccess
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.matchers.shouldBe
 
 internal class ResultDSLTest : FreeSpec() {
 
@@ -42,8 +41,7 @@ internal class ResultDSLTest : FreeSpec() {
                                     a + b
                                 }
 
-                                result.shouldBeSuccess()
-                                result.value shouldBe FIRST_VALUE + SECOND_VALUE
+                                result shouldBeSuccess FIRST_VALUE + SECOND_VALUE
                             }
                         }
 
@@ -57,8 +55,7 @@ internal class ResultDSLTest : FreeSpec() {
                                     a + b
                                 }
 
-                                result.shouldBeError()
-                                result.cause shouldBe Error.First
+                                result shouldBeError Error.First
                             }
                         }
                     }
@@ -76,8 +73,7 @@ internal class ResultDSLTest : FreeSpec() {
                                 a + b + c
                             }
 
-                            result.shouldBeError()
-                            result.cause shouldBe Error.First
+                            result shouldBeError Error.First
                         }
                     }
                 }
@@ -100,8 +96,7 @@ internal class ResultDSLTest : FreeSpec() {
                                 a + b + d
                             }
 
-                            result.shouldBeSuccess()
-                            result.value shouldBe 6
+                            result shouldBeSuccess 6
                         }
                     }
 
@@ -121,8 +116,7 @@ internal class ResultDSLTest : FreeSpec() {
                                 a + b + d
                             }
 
-                            result.shouldBeError()
-                            result.cause shouldBe Error.First
+                            result shouldBeError Error.First
                         }
                     }
 
@@ -142,8 +136,7 @@ internal class ResultDSLTest : FreeSpec() {
                                 a + b + d
                             }
 
-                            result.shouldBeError()
-                            result.cause shouldBe Error.First
+                            result shouldBeError Error.First
                         }
                     }
                 }
@@ -157,8 +150,7 @@ internal class ResultDSLTest : FreeSpec() {
                             SECOND_VALUE
                         }
 
-                        result.shouldBeSuccess()
-                        result.value shouldBe SECOND_VALUE
+                        result shouldBeSuccess SECOND_VALUE
                     }
                 }
 
@@ -171,8 +163,7 @@ internal class ResultDSLTest : FreeSpec() {
                             SECOND_VALUE
                         }
 
-                        result.shouldBeError()
-                        result.cause shouldBe Error.First
+                        result shouldBeError Error.First
                     }
                 }
             }
