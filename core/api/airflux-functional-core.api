@@ -264,19 +264,26 @@ public final class io/github/airflux/functional/TryRaise : io/github/airflux/fun
 
 public final class io/github/airflux/functional/collection/NonEmptyList {
 	public static final field Companion Lio/github/airflux/functional/collection/NonEmptyList$Companion;
-	public static final fun add--10yztY (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
-	public static final fun add-YJDBW5c (Ljava/util/List;Ljava/util/List;)Ljava/util/List;
-	public static final fun addAll--10yztY (Ljava/util/List;Ljava/util/List;)Ljava/util/List;
+	public static final fun all-impl (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Z
+	public static final fun any-impl (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Z
 	public static final synthetic fun box-impl (Ljava/util/List;)Lio/github/airflux/functional/collection/NonEmptyList;
 	public static fun constructor-impl (Ljava/util/List;)Ljava/util/List;
+	public static final fun contains-impl (Ljava/util/List;Ljava/lang/Object;)Z
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (Ljava/util/List;Ljava/lang/Object;)Z
 	public static final fun equals-impl0 (Ljava/util/List;Ljava/util/List;)Z
+	public static final fun flatMap-ePjGNOc (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun getOrNull-impl (Ljava/util/List;I)Ljava/lang/Object;
+	public static final fun getSize-impl (Ljava/util/List;)I
 	public fun hashCode ()I
 	public static fun hashCode-impl (Ljava/util/List;)I
 	public static final fun invoke-B7Cy8eY (Ljava/lang/Object;Ljava/util/List;)Ljava/util/List;
 	public static final fun invoke-B7Cy8eY (Ljava/lang/Object;[Ljava/lang/Object;)Ljava/util/List;
 	public static final fun iterator-impl (Ljava/util/List;)Ljava/util/Iterator;
+	public static final fun map-ePjGNOc (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun plus-ePjGNOc (Ljava/util/List;Ljava/lang/Iterable;)Ljava/util/List;
+	public static final fun plus-ePjGNOc (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public static final fun plus-iAtFZqo (Ljava/util/List;Ljava/util/List;)Ljava/util/List;
 	public static final fun toList-impl (Ljava/util/List;)Ljava/util/List;
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (Ljava/util/List;)Ljava/lang/String;
@@ -285,18 +292,8 @@ public final class io/github/airflux/functional/collection/NonEmptyList {
 }
 
 public final class io/github/airflux/functional/collection/NonEmptyList$Companion {
-	public final fun add--10yztY (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
-	public final fun add-YJDBW5c (Ljava/util/List;Ljava/util/List;)Ljava/util/List;
-	public final fun addAll--10yztY (Ljava/util/List;Ljava/util/List;)Ljava/util/List;
 	public final fun invoke-B7Cy8eY (Ljava/lang/Object;Ljava/util/List;)Ljava/util/List;
 	public final fun invoke-B7Cy8eY (Ljava/lang/Object;[Ljava/lang/Object;)Ljava/util/List;
 	public final fun valueOf-hfyoIDA (Ljava/util/List;)Ljava/util/List;
-}
-
-public final class io/github/airflux/functional/collection/NonEmptyListKt {
-	public static final fun exists-bIWUzpc (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Z
-	public static final fun plus-ABUNjUM (Ljava/util/List;Ljava/util/List;)Ljava/util/List;
-	public static final fun plus-bIWUzpc (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
-	public static final fun plus-bIWUzpc (Ljava/util/List;Ljava/util/List;)Ljava/util/List;
 }
 

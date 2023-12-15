@@ -69,7 +69,8 @@ internal class NonEmptyListTest : FreeSpec() {
             }
 
             "when a non-empty list is passed to create an instance of the type" - {
-                val values = NonEmptyList.valueOf(listOf(FIRST, SECOND, THIRD))
+                val values =
+                    NonEmptyList.valueOf(listOf(FIRST, SECOND, THIRD))
 
                 "then the new instance of the type should contain all the elements from the list in the order in which they were passed" {
                     values.shouldNotBeNull()
@@ -94,10 +95,19 @@ internal class NonEmptyListTest : FreeSpec() {
             }
 
             "when another instance of the type is added to the instance of the type" - {
-                val values = NonEmptyList(FIRST) + NonEmptyList(SECOND, THIRD)
+                val values =
+                    NonEmptyList(FIRST) + NonEmptyList(SECOND, THIRD)
 
                 "then the new instance of the type should contain elements from both instances in the order in which they were in the originals" {
                     values.toList() shouldContainExactly listOf(FIRST, SECOND, THIRD)
+                }
+            }
+
+            "when calling the `size` property" - {
+                val values = NonEmptyList(FIRST, SECOND)
+
+                "then should return the number of elements" {
+                    values.size shouldBe 2
                 }
             }
 
@@ -117,21 +127,97 @@ internal class NonEmptyListTest : FreeSpec() {
                 }
             }
 
-            "when a predicate of the `exists` method for a list returns true" - {
-                val predicate: (Int) -> Boolean = { it == SECOND }
+            "when calling the `getOrNull` function" - {
+                val values = NonEmptyList(FIRST, SECOND)
 
-                "then the `exists` method should return true" {
-                    val values = NonEmptyList(FIRST, SECOND, THIRD)
-                    values.exists(predicate) shouldBe true
+                "when the index is within the valid range" - {
+                    val value = values.getOrNull(0)
+
+                    "then should return the value by index" {
+                        value shouldBe FIRST
+                    }
+                }
+
+                "when the index is not in the valid range" - {
+                    val value = values.getOrNull(values.size)
+
+                    "then should return the null value" {
+                        value.shouldBeNull()
+                    }
                 }
             }
 
-            "when a predicate of the `exists` method for a list returns false" - {
-                val predicate: (Int) -> Boolean = { it == THIRD }
+            "when calling the `any` function" - {
                 val values = NonEmptyList(FIRST, SECOND)
 
-                "then the `exists` method should return false" {
-                    values.exists(predicate) shouldBe false
+                "when any element satisfy the predicate condition" - {
+                    val predicate: (Int) -> Boolean = { it == SECOND }
+
+                    "then the `any` method should return true" {
+                        values.any(predicate) shouldBe true
+                    }
+                }
+
+                "when all elements does not satisfy the predicate condition" - {
+                    val predicate: (Int) -> Boolean = { it == THIRD }
+
+                    "then the `any` method should return false" {
+                        values.any(predicate) shouldBe false
+                    }
+                }
+            }
+
+            "when calling the `all` function" - {
+                val values = NonEmptyList(FIRST, SECOND)
+
+                "when all elements satisfy the predicate condition" - {
+                    val predicate: (Int) -> Boolean = { it <= SECOND }
+
+                    "then the `all` method should return true" {
+                        values.all(predicate) shouldBe true
+                    }
+                }
+
+                "when some element does not satisfy the predicate condition" - {
+                    val predicate: (Int) -> Boolean = { it < SECOND }
+
+                    "then the `all` method should return false" {
+                        values.all(predicate) shouldBe false
+                    }
+                }
+            }
+
+            "when calling the `contains` function" - {
+                val values = NonEmptyList(FIRST, SECOND)
+
+                "when the list contains a value" - {
+
+                    "then method should return true" {
+                        (FIRST in values) shouldBe true
+                    }
+                }
+
+                "when the list does not contain a value" - {
+
+                    "then method should return false" {
+                        (THIRD in values) shouldBe false
+                    }
+                }
+            }
+
+            "when calling the `map` function" - {
+                val values = NonEmptyList(FIRST, SECOND).map { it + 1 }
+
+                "then should return the list of transformed values" {
+                    values.toList() shouldContainExactly listOf(FIRST + 1, SECOND + 1)
+                }
+            }
+
+            "when calling the `flatMap` function" - {
+                val values = NonEmptyList(FIRST, SECOND).flatMap { NonEmptyList(it, it + 1) }
+
+                "then should return the list of transformed values" {
+                    values.toList() shouldContainExactly listOf(FIRST, FIRST + 1, SECOND, SECOND + 1)
                 }
             }
         }

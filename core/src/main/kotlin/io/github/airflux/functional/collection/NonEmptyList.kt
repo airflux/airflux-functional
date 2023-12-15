@@ -16,12 +16,35 @@
 
 package io.github.airflux.functional.collection
 
+@Suppress("TooManyFunctions")
 @JvmInline
 public value class NonEmptyList<out T> @PublishedApi internal constructor(@PublishedApi internal val items: List<T>) {
+
+    public val size: Int
+        get() = items.size
 
     public fun toList(): List<T> = items
 
     public operator fun iterator(): Iterator<T> = items.iterator()
+
+    public fun getOrNull(index: Int): T? = items.getOrNull(index)
+
+    public infix operator fun contains(value: @UnsafeVariance T): Boolean = items.contains(value)
+
+    public inline fun any(predicate: (T) -> Boolean): Boolean = items.any(predicate)
+
+    public inline fun all(predicate: (T) -> Boolean): Boolean = items.all(predicate)
+
+    public inline fun <R> map(transform: (T) -> R): NonEmptyList<R> = NonEmptyList(items.map(transform))
+
+    public inline fun <R> flatMap(transform: (T) -> NonEmptyList<R>): NonEmptyList<R> =
+        NonEmptyList(items.flatMap { transform(it).items })
+
+    public operator fun plus(item: @UnsafeVariance T): NonEmptyList<T> = NonEmptyList(items + item)
+
+    public operator fun plus(items: Iterable<@UnsafeVariance T>): NonEmptyList<T> = NonEmptyList(this.items + items)
+
+    public operator fun plus(other: NonEmptyList<@UnsafeVariance T>): NonEmptyList<T> = plus(other.items)
 
     public companion object {
 
@@ -40,26 +63,5 @@ public value class NonEmptyList<out T> @PublishedApi internal constructor(@Publi
         public fun <T> valueOf(list: List<T>): NonEmptyList<T>? =
             list.takeIf { it.isNotEmpty() }
                 ?.let { NonEmptyList(it) }
-
-        @JvmStatic
-        public fun <T> add(list: NonEmptyList<T>, item: T): NonEmptyList<T> =
-            NonEmptyList(list.items + item)
-
-        @JvmStatic
-        public fun <T> add(list: NonEmptyList<T>, other: NonEmptyList<T>): NonEmptyList<T> =
-            addAll(list, other.items)
-
-        @JvmStatic
-        public fun <T> addAll(list: NonEmptyList<T>, items: List<T>): NonEmptyList<T> =
-            if (items.isEmpty()) list else NonEmptyList(list.items + items)
     }
 }
-
-public fun <T> NonEmptyList<T>.exists(predicate: (T) -> Boolean): Boolean = items.any { predicate(it) }
-
-public operator fun <T> NonEmptyList<T>.plus(item: T): NonEmptyList<T> = NonEmptyList.add(this, item)
-
-public operator fun <T> NonEmptyList<T>.plus(items: List<T>): NonEmptyList<T> = NonEmptyList.addAll(this, items)
-
-public operator fun <T> NonEmptyList<T>.plus(other: NonEmptyList<T>): NonEmptyList<T> =
-    NonEmptyList.add(this, other)
