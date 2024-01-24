@@ -1,5 +1,5 @@
 import Configuration.Publishing.mavenCentralMetadata
-import Configuration.Publishing.mavenSonatypeRepository
+import Configuration.Publishing.mavenRepository
 
 plugins {
     id("kotlin-common-convention")
@@ -29,7 +29,7 @@ publishing {
 
     repositories {
         mavenLocal()
-        mavenSonatypeRepository(project)
+        mavenRepository(project)
     }
 }
 
