@@ -25,6 +25,8 @@ import io.kotest.matchers.shouldBe
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
+public inline fun <reified T> Result<T, *>.getValue(): T = this.shouldBeSuccess().value
+
 @OptIn(ExperimentalContracts::class)
 public inline fun <reified T> Result<T, *>.shouldBeSuccess(): Result.Success<T> {
     contract {
