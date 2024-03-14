@@ -2,6 +2,11 @@ public final class io/github/airflux/functional/kotest/FailureKt {
 	public static final fun failure (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Throwable;
 }
 
+public final class io/github/airflux/functional/kotest/ResultMatchersKt {
+	public static final fun escape (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun makeDescription (Ljava/lang/String;)Ljava/lang/String;
+}
+
 public final class io/github/airflux/functional/kotest/TryMatchersKt {
 	public static final fun shouldBeFailure (Lio/github/airflux/functional/Try;)Lio/github/airflux/functional/Try$Failure;
 	public static final fun shouldBeFailure (Lio/github/airflux/functional/Try;Ljava/lang/Throwable;)V

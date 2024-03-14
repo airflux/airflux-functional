@@ -38,7 +38,7 @@ public inline fun <reified T> Result<T, *>.shouldBeSuccess(): Result.Success<T> 
             failure(
                 expected = Result.Success::class.qualifiedName!!,
                 actual = this::class.qualifiedName!!,
-                failureMessage = "Expected a Success, but got ${this::class.simpleName}. "
+                failureMessage = "Expected a `Success`, but got `${this::class.simpleName}`. "
             )
         )
     }
@@ -52,11 +52,12 @@ public inline fun <reified T, F> Result<T, F>.shouldBeSuccess(message: (F) -> St
     }
 
     if (this.isError()) {
+        val causeDescription = message(this.cause).makeDescription()
         errorCollector.collectOrThrow(
             failure(
                 expected = Result.Success::class.qualifiedName!!,
                 actual = this::class.qualifiedName!!,
-                failureMessage = "Expected a `Success`, but got `${this::class.simpleName}` (${message(this.cause)}). "
+                failureMessage = "Expected a `Success`, but got `${this::class.simpleName}`$causeDescription"
             )
         )
     }
@@ -75,10 +76,6 @@ public inline infix fun <reified T> Result<T, *>.shouldBeSuccess(block: (T) -> U
     block(this.shouldBeSuccess().value)
 }
 
-public inline fun <reified T, F> Result<T, F>.shouldBeSuccess(block: (T) -> Unit, message: (F) -> String) {
-    block(this.shouldBeSuccess(message).value)
-}
-
 @OptIn(ExperimentalContracts::class)
 public inline fun <reified E> Result<*, E>.shouldBeError(): Result.Error<E> {
     contract {
@@ -90,7 +87,26 @@ public inline fun <reified E> Result<*, E>.shouldBeError(): Result.Error<E> {
             failure(
                 expected = Result.Error::class.qualifiedName!!,
                 actual = this::class.qualifiedName!!,
-                failureMessage = "Expected a Error, but got ${this::class.simpleName}. "
+                failureMessage = "Expected a `Error`, but got `${this::class.simpleName}`"
+            )
+        )
+    }
+    return this as Result.Error<E>
+}
+
+@OptIn(ExperimentalContracts::class)
+public inline fun <T, reified E> Result<T, E>.shouldBeError(message: (T) -> String): Result.Error<E> {
+    contract {
+        returns() implies (this@shouldBeError is Result.Error<E>)
+    }
+
+    if (this.isSuccess()) {
+        val causeDescription = message(this.value).makeDescription()
+        errorCollector.collectOrThrow(
+            failure(
+                expected = Result.Error::class.qualifiedName!!,
+                actual = this::class.qualifiedName!!,
+                failureMessage = "Expected a `Error`, but got `${this::class.simpleName}`$causeDescription"
             )
         )
     }
@@ -101,6 +117,19 @@ public inline infix fun <reified E> Result<*, E>.shouldBeError(expected: E) {
     this.shouldBeError().cause shouldBe expected
 }
 
+public inline fun <T, reified E> Result<T, E>.shouldBeError(expected: E, message: (T) -> String) {
+    this.shouldBeError(message).cause shouldBe expected
+}
+
 public inline infix fun <reified E> Result<*, E>.shouldBeError(block: (E) -> Unit) {
     block(this.shouldBeError().cause)
 }
+
+@PublishedApi
+internal fun String.makeDescription(): String = escape()
+    .takeIf { it.isNotBlank() }
+    ?.let { " ($it)." }
+    ?: "."
+
+@PublishedApi
+internal fun String.escape(): String = this.replace("\n", "\\n").replace("\r", "\\r")
