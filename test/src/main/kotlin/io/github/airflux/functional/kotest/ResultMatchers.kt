@@ -25,7 +25,7 @@ import io.kotest.matchers.shouldBe
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
-public inline fun <reified T> Result<T, *>.getValue(): T = this.shouldBeSuccess().value
+public inline fun <reified T, F> Result<T, F>.getValue(): T = this.shouldBeSuccess().value
 
 @OptIn(ExperimentalContracts::class)
 public inline fun <reified T> Result<T, *>.shouldBeSuccess(): Result.Success<T> {
@@ -45,12 +45,38 @@ public inline fun <reified T> Result<T, *>.shouldBeSuccess(): Result.Success<T> 
     return this as Result.Success<T>
 }
 
+@OptIn(ExperimentalContracts::class)
+public inline fun <reified T, F> Result<T, F>.shouldBeSuccess(message: (F) -> String): Result.Success<T> {
+    contract {
+        returns() implies (this@shouldBeSuccess is Result.Success<T>)
+    }
+
+    if (this.isError()) {
+        errorCollector.collectOrThrow(
+            failure(
+                expected = Result.Success::class.qualifiedName!!,
+                actual = this::class.qualifiedName!!,
+                failureMessage = "Expected a `Success`, but got `${this::class.simpleName}` (${message(this.cause)}). "
+            )
+        )
+    }
+    return this as Result.Success<T>
+}
+
 public inline infix fun <reified T> Result<T, *>.shouldBeSuccess(expected: T) {
     this.shouldBeSuccess().value shouldBe expected
 }
 
+public inline fun <reified T, F> Result<T, F>.shouldBeSuccess(expected: T, message: (F) -> String) {
+    this.shouldBeSuccess(message).value shouldBe expected
+}
+
 public inline infix fun <reified T> Result<T, *>.shouldBeSuccess(block: (T) -> Unit) {
     block(this.shouldBeSuccess().value)
+}
+
+public inline fun <reified T, F> Result<T, F>.shouldBeSuccess(block: (T) -> Unit, message: (F) -> String) {
+    block(this.shouldBeSuccess(message).value)
 }
 
 @OptIn(ExperimentalContracts::class)
