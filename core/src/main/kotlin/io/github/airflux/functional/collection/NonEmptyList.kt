@@ -31,6 +31,8 @@ public value class NonEmptyList<out T> @PublishedApi internal constructor(@Publi
 
     public infix operator fun contains(value: @UnsafeVariance T): Boolean = items.contains(value)
 
+    public fun exists(predicate: (T) -> Boolean): Boolean = any(predicate)
+
     public inline fun any(predicate: (T) -> Boolean): Boolean = items.any(predicate)
 
     public inline fun all(predicate: (T) -> Boolean): Boolean = items.all(predicate)

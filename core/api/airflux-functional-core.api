@@ -272,6 +272,7 @@ public final class io/github/airflux/functional/collection/NonEmptyList {
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (Ljava/util/List;Ljava/lang/Object;)Z
 	public static final fun equals-impl0 (Ljava/util/List;Ljava/util/List;)Z
+	public static final fun exists-impl (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Z
 	public static final fun flatMap-ePjGNOc (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
 	public static final fun getOrNull-impl (Ljava/util/List;I)Ljava/lang/Object;
 	public static final fun getSize-impl (Ljava/util/List;)I
