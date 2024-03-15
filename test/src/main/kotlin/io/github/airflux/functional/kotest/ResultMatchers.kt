@@ -132,4 +132,4 @@ internal fun String.makeDescription(): String = escape()
     ?: "."
 
 @PublishedApi
-internal fun String.escape(): String = this.replace("\n", "\\n").replace("\r", "\\r")
+internal fun String.escape(): String = this.replace(System.lineSeparator(), ". ")
