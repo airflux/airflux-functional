@@ -35,13 +35,13 @@ public inline fun <reified T, F> Result<T, F>.shouldBeSuccess(message: (F) -> St
 
     if (this.isError()) {
         val expectedType = Result.Success::class.qualifiedName!!
-        val actualType = this::class.simpleName!!
+        val actualType = this::class.qualifiedName!!
         val causeDescription = message(this.cause).makeDescription()
         errorCollector.collectOrThrow(
             failure(
                 expected = expectedType,
                 actual = actualType,
-                failureMessage = "Expected the `Success` type, but got the `$actualType` type$causeDescription"
+                failureMessage = "Expected the `$expectedType` type, but got the `$actualType` type$causeDescription"
             )
         )
     }
@@ -76,7 +76,7 @@ public inline fun <T, reified E> Result<T, E>.shouldBeError(
             failure(
                 expected = expectedType,
                 actual = actualType,
-                failureMessage = "Expected the `Error` type, but got the `$actualType` type$causeDescription"
+                failureMessage = "Expected the `$expectedType` type, but got the `$actualType` type$causeDescription"
             )
         )
     }
