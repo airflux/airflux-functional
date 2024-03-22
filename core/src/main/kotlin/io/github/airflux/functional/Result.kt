@@ -70,15 +70,8 @@ public fun <T, E> Result<T, E>.isSuccess(): Boolean {
     return this is Result.Success<T>
 }
 
-@OptIn(ExperimentalContracts::class)
-public inline fun <T, E> Result<T, E>.isSuccess(predicate: (T) -> Boolean): Boolean {
-    contract {
-        returns(true) implies (this@isSuccess is Result.Success<T>)
-        returns(false) implies (this@isSuccess is Result.Error<E>)
-        callsInPlace(predicate, InvocationKind.AT_MOST_ONCE)
-    }
-    return this is Result.Success<T> && predicate(value)
-}
+public inline fun <T, E> Result<T, E>.isSuccess(predicate: (T) -> Boolean): Boolean =
+    this is Result.Success<T> && predicate(value)
 
 @OptIn(ExperimentalContracts::class)
 public fun <T, E> Result<T, E>.isError(): Boolean {
@@ -89,15 +82,8 @@ public fun <T, E> Result<T, E>.isError(): Boolean {
     return this is Result.Error<E>
 }
 
-@OptIn(ExperimentalContracts::class)
-public inline fun <T, E> Result<T, E>.isError(predicate: (E) -> Boolean): Boolean {
-    contract {
-        returns(false) implies (this@isError is Result.Success<T>)
-        returns(true) implies (this@isError is Result.Error<E>)
-        callsInPlace(predicate, InvocationKind.AT_MOST_ONCE)
-    }
-    return this is Result.Error<E> && predicate(cause)
-}
+public inline fun <T, E> Result<T, E>.isError(predicate: (E) -> Boolean): Boolean =
+    this is Result.Error<E> && predicate(cause)
 
 @OptIn(ExperimentalContracts::class)
 public inline fun <T, R, E> Result<T, E>.fold(onSuccess: (T) -> R, onError: (E) -> R): R {
