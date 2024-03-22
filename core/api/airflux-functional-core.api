@@ -149,6 +149,7 @@ public final class io/github/airflux/functional/ResultKt {
 	public static final fun asError (Ljava/lang/Object;)Lio/github/airflux/functional/Result$Error;
 	public static final fun asSuccess (Ljava/lang/Object;)Lio/github/airflux/functional/Result$Success;
 	public static final fun error (Ljava/lang/Object;)Lio/github/airflux/functional/Result$Error;
+	public static final fun errorIfNullValue (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function0;)Lio/github/airflux/functional/Result;
 	public static final fun flatMap (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)Lio/github/airflux/functional/Result;
 	public static final fun fold (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static final fun forEach (Lio/github/airflux/functional/Result;Lkotlin/jvm/functions/Function1;)V

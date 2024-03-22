@@ -253,3 +253,17 @@ public inline fun <T, R, E> Iterable<T>.traverse(transform: (T) -> Result<R, E>)
     }
     return if (items.isNotEmpty()) items.success() else Result.asEmptyList
 }
+
+@OptIn(ExperimentalContracts::class)
+public inline fun <T, E> Result<T?, E>.errorIfNullValue(errorBuilder: () -> E): Result<T, E> {
+    contract {
+        callsInPlace(errorBuilder, InvocationKind.AT_MOST_ONCE)
+    }
+    return if (this.isError())
+        this
+    else if (this.value != null) {
+        @Suppress("UNCHECKED_CAST")
+        this as Result<T, E>
+    } else
+        errorBuilder().error()
+}

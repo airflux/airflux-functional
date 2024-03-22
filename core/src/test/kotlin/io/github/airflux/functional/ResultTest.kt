@@ -642,6 +642,39 @@ internal class ResultTest : FreeSpec() {
                     }
                 }
             }
+
+            "the `errorIfNullValue` function" - {
+
+                "when a variable has the `Result#Success` type" - {
+
+                    "when a value is not null" - {
+                        val original: Result<String?, Error> = ORIGINAL_VALUE.success()
+
+                        "then should return the `Result#Success` type with the value" {
+                            val result = original.errorIfNullValue { Error.Blank }
+                            result shouldBeSuccess ORIGINAL_VALUE
+                        }
+                    }
+
+                    "when a value is null" - {
+                        val original: Result<String?, Error> = Result.asNull
+
+                        "then should return the `Result#Error` type with the error" {
+                            val result = original.errorIfNullValue { Error.Blank }
+                            result shouldBeError Error.Blank
+                        }
+                    }
+                }
+
+                "when a variable has the `Result#Error` type" - {
+                    val original: Result<String, Error> = Error.Empty.error()
+
+                    "then should return an original value" {
+                        val result = original.errorIfNullValue { Error.Blank }
+                        result.shouldBeSameInstanceAs(original)
+                    }
+                }
+            }
         }
 
         "The `success` function should return the `Result#Success` type with the passed value" {
